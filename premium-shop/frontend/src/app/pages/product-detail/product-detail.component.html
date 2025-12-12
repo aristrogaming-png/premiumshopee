@@ -1,0 +1,38 @@
+<div *ngIf="product; else loading">
+  <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+    <img
+      [src]="product!.imageUrl"
+      [alt]="product!.name"
+      class="w-full h-64 object-cover"
+    />
+    <div class="p-6">
+      <h2 class="text-2xl font-bold mb-2">{{ product!.name }}</h2>
+      <p class="text-gray-600 mb-4">{{ product!.description }}</p>
+      <p class="text-xl font-semibold mb-2">Price: $ {{ product!.price }}</p>
+      <p class="mb-2"><strong>Category:</strong> {{ product!.category }}</p>
+      <p class="mb-4">
+        <strong>Stock:</strong>
+        <span
+          [ngClass]="{
+            'text-red-600': product!.stock === 0,
+            'text-yellow-600': product!.stock > 0 && product!.stock < 5,
+            'text-green-600': product!.stock >= 5
+          }"
+        >
+          {{ product!.stock }}
+        </span>
+      </p>
+      <button
+        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-400"
+        (click)="buyNow()"
+        [disabled]="product!.stock === 0"
+      >
+        Buy Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading product details...</p>
+</ng-template>

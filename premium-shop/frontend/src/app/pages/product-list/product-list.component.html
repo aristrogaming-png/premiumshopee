@@ -1,0 +1,124 @@
+<!-- Hero -->
+<section class="relative overflow-hidden rounded-3xl border bg-gradient-to-br from-gray-50 to-white p-6 sm:p-10">
+  <div class="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-gray-200 blur-3xl opacity-60"></div>
+  <div class="absolute -left-24 -bottom-24 h-64 w-64 rounded-full bg-gray-100 blur-3xl opacity-60"></div>
+
+  <div class="relative">
+    <div class="inline-flex items-center gap-2 rounded-full border bg-white px-3 py-1 text-xs text-gray-600">
+      <span class="h-2 w-2 rounded-full bg-green-500"></span>
+      Instant activation • WhatsApp support
+    </div>
+
+    <h1 class="mt-4 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      Premium subscriptions, instantly.
+    </h1>
+    <p class="mt-2 max-w-2xl text-sm text-gray-600 sm:text-base">
+      Browse verified plans like Spotify, Netflix, LinkedIn, Canva and more. Click “Buy on WhatsApp” to order.
+    </p>
+
+    <!-- Search -->
+    <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div class="flex w-full items-center gap-2 rounded-2xl border bg-white px-4 py-3 shadow-sm">
+        <span class="text-gray-400">🔎</span>
+        <input [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" type="text"
+          placeholder="Search subscriptions… (e.g., Spotify, Canva)"
+          class="w-full bg-transparent text-sm outline-none" />
+      </div>
+
+      <button (click)="searchTerm=''; selectedCategory=''; applyFilters()"
+        class="rounded-2xl border bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+        Clear
+      </button>
+    </div>
+
+    <!-- Category pills -->
+    <div class="mt-5 flex flex-wrap gap-2">
+      <button (click)="selectCategory('')"
+        [ngClass]="selectedCategory === '' ? 'bg-black text-white' : 'bg-white hover:bg-gray-50 text-gray-700'"
+        class="rounded-full border px-4 py-2 text-sm font-medium transition">
+        All
+      </button>
+
+      <button *ngFor="let cat of categories" (click)="selectCategory(cat)"
+        [ngClass]="selectedCategory === cat ? 'bg-black text-white' : 'bg-white hover:bg-gray-50 text-gray-700'"
+        class="rounded-full border px-4 py-2 text-sm font-medium transition">
+        {{ cat }}
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Result meta -->
+<div class="mt-6 flex items-center justify-between">
+  <div class="text-sm text-gray-600">
+    Showing <span class="font-semibold text-gray-900">{{ filteredProducts.length }}</span> items
+  </div>
+</div>
+
+<!-- Grid -->
+<section class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <div *ngFor="let product of filteredProducts"
+    class="group overflow-hidden rounded-3xl border bg-white shadow-sm hover:shadow-md transition"
+    [ngClass]="product.stock === 0 ? 'opacity-60' : ''">
+    <!-- Image -->
+    <div class="relative aspect-[16/10] overflow-hidden bg-gray-50">
+      <img [src]="product.imageUrl || 'https://via.placeholder.com/800x500?text=Premium+Shop'" [alt]="product.name"
+        class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+        (error)="product.imageUrl='https://via.placeholder.com/800x500?text=Premium+Shop'" />
+
+      <!-- Stock badges -->
+      <div class="absolute left-3 top-3 flex gap-2">
+        <span *ngIf="product.stock === 0" class="rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold text-white">
+          Out of stock
+        </span>
+
+        <span *ngIf="product.stock > 0 && product.stock < 5"
+          class="rounded-full bg-amber-500 px-3 py-1 text-xs font-semibold text-white">
+          Hurry! {{ product.stock }} left
+        </span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h3 class="text-base font-semibold text-gray-900">
+            {{ product.name }}
+          </h3>
+          <p class="mt-1 text-xs text-gray-500">{{ product.category }}</p>
+        </div>
+
+        <div class="text-right">
+          <div class="text-lg font-bold text-gray-900">${{ product.price }}</div>
+          <div class="text-xs text-gray-500">Best price</div>
+        </div>
+      </div>
+
+      <p class="mt-3 line-clamp-2 text-sm text-gray-600">
+        {{ product.description || 'Instant activation • Warranty included' }}
+      </p>
+
+      <div class="mt-4 flex gap-2">
+        <!-- Details -->
+        <a [routerLink]="['/product', product.id]"
+          class="flex-1 text-center rounded-2xl border px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 transition">
+          Details
+        </a>
+      
+        <!-- Buy -->
+        <button [disabled]="product.stock === 0" (click)="buyNow(product)"
+          class="flex-1 rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white hover:opacity-90 transition disabled:opacity-50">
+          Buy
+        </button>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Empty state -->
+<div *ngIf="filteredProducts.length === 0" class="mt-10 rounded-3xl border bg-white p-10 text-center">
+  <div class="text-lg font-semibold text-gray-900">No products found</div>
+  <div class="mt-1 text-sm text-gray-600">Try a different keyword or category.</div>
+</div>

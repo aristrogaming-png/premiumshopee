@@ -1,0 +1,53 @@
+<button class="bg-red-500 text-white px-3 py-1 rounded" (click)="logout()">
+  Logout
+</button>
+
+
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-2xl font-bold">Inventory</h2>
+  <button
+    (click)="addProduct()"
+    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+  >
+    Add Product
+  </button>
+</div>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full border border-gray-300 bg-white">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2 border-b">Name</th>
+        <th class="px-4 py-2 border-b">Category</th>
+        <th class="px-4 py-2 border-b">Price</th>
+        <th class="px-4 py-2 border-b">Stock</th>
+        <th class="px-4 py-2 border-b">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let product of products"
+        class="hover:bg-gray-50"
+      >
+        <td class="px-4 py-2 border-b">{{ product.name }}</td>
+        <td class="px-4 py-2 border-b">{{ product.category }}</td>
+        <td class="px-4 py-2 border-b">$ {{ product.price }}</td>
+        <td class="px-4 py-2 border-b">{{ product.stock }}</td>
+        <td class="px-4 py-2 border-b space-x-2">
+          <button
+            class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+            (click)="editProduct(product.id)"
+          >
+            Edit
+          </button>
+          <button
+            class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            (click)="deleteProduct(product.id)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
