@@ -1,7 +1,6 @@
+/* Optional small enhancements */
 :host {
    display: block;
-   background: #020617;
-   min-height: 100vh;
 }
 
 .line-clamp-2,
