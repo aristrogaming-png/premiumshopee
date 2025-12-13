@@ -16,3 +16,15 @@ pnpm-debug.log*
 # OS
 .DS_Store
 Thumbs.db
+
+
+aristrogaming_db_user
+GuuT3k6xYWZDSVzt
+
+mongodb+srv://aristrogaming_db_user:GuuT3k6xYWZDSVzt@cluster0.xxxxx.mongodb.net/premiumshop?retryWrites=true&w=majority
+mongodb+srv://aristrogaming_db_user:<db_password>@premiumshop.y8cfifv.mongodb.net/?appName=premiumshop
+
+MONGO_URI = mongodb+srv://aristrogaming_db_user:GuuT3k6xYWZDSVzt@premiumshop.y8cfifv.mongodb.net/premiumshop?retryWrites=true&w=majority&appName=premiumshop
+ADMIN_EMAIL = admin@premiumshop.com
+ADMIN_PASSWORD_HASH = $2b$10$/hkUFU2IV/UzBv/FhACW9OGj/5atEV4N4Pwb0gq9z3ZS4CQvIK16C
+JWT_SECRET = premiumshop_super_secure_secret_123
