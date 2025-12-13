@@ -15,7 +15,7 @@ export class ProductListComponent implements OnInit {
   selectedCategory = '';
 
   // WhatsApp contact number (international format without plus sign)
-  private phoneNumber = '919876543210';
+  private phoneNumber = '918247276831';
 
   constructor(private productService: ProductService) {}
 

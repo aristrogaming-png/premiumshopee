@@ -10,7 +10,7 @@ import { Product } from '../../models/product';
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
-  private phoneNumber = '+918247276831';
+  private phoneNumber = '918247276831';
 
   constructor(
     private route: ActivatedRoute,
