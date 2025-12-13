@@ -1,21 +1,20 @@
-/* Tailwind CSS handles most of the styling. You can add component‑specific
-   styles here if needed. */
-      /* Optional small enhancements */
-      :host {
-         display: block;
-      }
-   
-      .line-clamp-2,
-      .line-clamp-3 {
-         display: -webkit-box;
-         -webkit-box-orient: vertical;
-         overflow: hidden;
-      }
-   
-      .line-clamp-2 {
-         -webkit-line-clamp: 2;
-      }
-   
-      .line-clamp-3 {
-         -webkit-line-clamp: 3;
-      }
+:host {
+   display: block;
+   background: #020617;
+   min-height: 100vh;
+}
+
+.line-clamp-2,
+.line-clamp-3 {
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   overflow: hidden;
+}
+
+.line-clamp-2 {
+   -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+   -webkit-line-clamp: 3;
+}

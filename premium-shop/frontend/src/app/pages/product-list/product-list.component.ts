@@ -68,4 +68,10 @@ export class ProductListComponent implements OnInit {
     )}`;
     window.open(url, '_blank');
   }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = '/assets/placeholder.jpg';
+  }
+  
 }
