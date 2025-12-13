@@ -1,89 +1,151 @@
-<section class="mt-8">
-  <div class="flex items-center justify-between mb-6">
-    <div>
-      <h2 class="text-2xl font-bold text-gray-900">Premium Subscriptions</h2>
-      <p class="text-sm text-gray-600">
-        Verified plans • Instant WhatsApp checkout
+<!-- DARK HERO -->
+<section class="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0d10]">
+  <div class="absolute inset-0 bg-gradient-to-br from-[#111827] via-[#020617] to-black"></div>
+  <div class="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-indigo-500/10 blur-3xl"></div>
+  <div class="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-purple-500/10 blur-3xl"></div>
+
+  <div class="relative px-6 py-12 sm:px-10 sm:py-16">
+    <div class="max-w-2xl">
+      <div
+        class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80">
+        <span class="h-2 w-2 rounded-full bg-green-400"></span>
+        Live stock • Instant activation
+      </div>
+
+      <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+        Premium subscriptions,
+        <span class="text-white/70">delivered instantly.</span>
+      </h1>
+
+      <p class="mt-4 text-sm leading-6 text-white/70 sm:text-base">
+        Buy trusted digital subscriptions with transparent pricing, real-time stock
+        and instant WhatsApp checkout.
       </p>
+
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+        <a href="#catalog"
+          class="inline-flex items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-black hover:bg-white/90 transition">
+          Explore plans
+        </a>
+
+        <button type="button" (click)="selectCategory('')"
+          class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition">
+          View all
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="mt-8 grid gap-4 sm:grid-cols-3">
+  <div class="rounded-2xl border border-white/10 bg-[#0b0d10] p-5">
+    <div class="text-sm font-semibold text-white">Real-time stock</div>
+    <div class="mt-1 text-sm text-white/60">Low-stock warnings & sold-out safety.</div>
+  </div>
+
+  <div class="rounded-2xl border border-white/10 bg-[#0b0d10] p-5">
+    <div class="text-sm font-semibold text-white">Instant checkout</div>
+    <div class="mt-1 text-sm text-white/60">One click opens WhatsApp with details.</div>
+  </div>
+
+  <div class="rounded-2xl border border-white/10 bg-[#0b0d10] p-5">
+    <div class="text-sm font-semibold text-white">Trusted pricing</div>
+    <div class="mt-1 text-sm text-white/60">Clear deals, no hidden charges.</div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section id="catalog" class="mt-12">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h2 class="text-xl font-bold text-white sm:text-2xl">Catalog</h2>
+      <p class="mt-1 text-sm text-white/60">Browse and filter available plans.</p>
     </div>
 
     <!-- Search -->
-    <div class="w-72">
-      <input type="text" placeholder="Search subscriptions…" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()"
-        class="w-full rounded-xl border px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+    <div class="w-full sm:w-96">
+      <div class="flex items-center gap-2 rounded-2xl border border-white/10 bg-[#0b0d10] px-4 py-3">
+        <span class="text-white/40">🔎</span>
+        <input type="text" class="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/40"
+          placeholder="Search Spotify, Netflix, Canva…" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" />
+      </div>
     </div>
   </div>
 
-  <!-- Category Pills -->
-  <div class="mb-6 flex flex-wrap gap-2">
-    <button (click)="selectCategory('')" class="rounded-full px-4 py-2 text-sm font-semibold border transition"
-      [ngClass]="selectedCategory === '' 
-        ? 'bg-blue-600 text-white border-blue-600' 
-        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">
+  <!-- Category pills -->
+  <div class="mt-4 flex flex-wrap gap-2">
+    <button type="button" (click)="selectCategory('')"
+      class="rounded-full px-4 py-2 text-sm font-bold transition border" [ngClass]="selectedCategory === '' 
+        ? 'bg-white text-black border-white'
+        : 'bg-[#0b0d10] text-white/80 border-white/10 hover:bg-white/10'">
       All
     </button>
 
-    <button *ngFor="let c of categories" (click)="selectCategory(c)"
-      class="rounded-full px-4 py-2 text-sm font-semibold border transition" [ngClass]="selectedCategory === c
-        ? 'bg-blue-600 text-white border-blue-600'
-        : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">
+    <button *ngFor="let c of categories" type="button" (click)="selectCategory(c)"
+      class="rounded-full px-4 py-2 text-sm font-bold transition border" [ngClass]="selectedCategory === c
+        ? 'bg-white text-black border-white'
+        : 'bg-[#0b0d10] text-white/80 border-white/10 hover:bg-white/10'">
       {{ c }}
     </button>
   </div>
 
-  <!-- PRODUCT GRID -->
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <!-- GRID -->
+  <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <div *ngFor="let product of filteredProducts"
-      class="group rounded-2xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden"
+      class="group overflow-hidden rounded-3xl border border-white/10 bg-[#0b0d10] transition hover:border-white/20 hover:shadow-xl"
       [ngClass]="product.stock === 0 ? 'opacity-60' : ''">
-      <!-- ✅ OPTIMIZED IMAGE -->
-      <div class="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
-        <img [src]="product.imageUrl || '/assets/placeholder.jpg'" [alt]="product.name" loading="lazy" decoding="async"
-          (error)="onImageError($event)"
-          class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+      <div class="relative">
+        <div class="relative aspect-[16/9] w-full overflow-hidden bg-white/5">
+          <img [src]="product.imageUrl || '/assets/placeholder.jpg'" [alt]="product.name" loading="lazy" decoding="async"
+            (error)="onImageError($event)"
+            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />        
+        </div>
+        
+        <div class="absolute left-3 top-3 flex gap-2">
+          <span class="rounded-full bg-black/70 px-3 py-1 text-xs font-bold text-white">
+            {{ product.category }}
+          </span>
+
+          <span *ngIf="product.stock > 0 && product.stock < 5"
+            class="rounded-full bg-yellow-500/90 px-3 py-1 text-xs font-bold text-black">
+            {{ product.stock }} left
+          </span>
+
+          <span *ngIf="product.stock === 0" class="rounded-full bg-gray-700 px-3 py-1 text-xs font-bold text-white">
+            Out
+          </span>
+        </div>
       </div>
 
       <div class="p-5">
-        <div class="flex justify-between items-start gap-3">
-          <h3 class="text-base font-bold text-gray-900 line-clamp-2">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="text-base font-bold text-white line-clamp-2">
             {{ product.name }}
           </h3>
 
           <div class="text-right">
-            <div class="text-lg font-extrabold text-blue-600">
-              ${{ product.price }}
+            <div class="text-sm font-extrabold text-white">
+              $ {{ product.price }}
             </div>
-            <div class="text-xs text-gray-500">Best price</div>
+            <div class="text-xs text-white/50">Best deal</div>
           </div>
         </div>
 
-        <p class="mt-2 text-sm text-gray-600 line-clamp-3">
+        <p class="mt-2 text-sm text-white/60 line-clamp-3">
           {{ product.description }}
         </p>
 
-        <!-- Stock -->
-        <div class="mt-2 text-xs">
-          <span *ngIf="product.stock >= 5" class="text-green-600 font-semibold">
-            In stock
-          </span>
-          <span *ngIf="product.stock > 0 && product.stock < 5" class="text-yellow-600 font-semibold">
-            Hurry! {{ product.stock }} left
-          </span>
-          <span *ngIf="product.stock === 0" class="text-red-600 font-semibold">
-            Out of stock
-          </span>
-        </div>
-
-        <!-- Actions -->
         <div class="mt-4 flex gap-2">
           <a [routerLink]="['/product', product.id]"
-            class="flex-1 rounded-xl border px-4 py-2 text-center text-sm font-semibold text-gray-700 hover:bg-gray-100 transition">
+            class="flex-1 rounded-2xl border border-white/10 px-4 py-3 text-center text-sm font-bold text-white hover:bg-white/10 transition">
             Details
           </a>
 
-          <button (click)="buyNow(product)" [disabled]="product.stock === 0"
-            class="flex-1 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition disabled:opacity-40">
-            Buy Now
+          <button type="button"
+            class="flex-1 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-black hover:bg-white/90 transition disabled:opacity-40"
+            (click)="buyNow(product)" [disabled]="product.stock === 0">
+            Buy
           </button>
         </div>
       </div>
@@ -91,10 +153,9 @@
   </div>
 
   <!-- EMPTY STATE -->
-  <div *ngIf="filteredProducts.length === 0" class="mt-12 rounded-2xl border bg-white p-8 text-center">
-    <h3 class="text-lg font-bold text-gray-900">No results found</h3>
-    <p class="text-sm text-gray-600 mt-1">
-      Try a different search or category
-    </p>
+  <div *ngIf="filteredProducts.length === 0"
+    class="mt-10 rounded-3xl border border-white/10 bg-[#0b0d10] p-8 text-center">
+    <div class="text-lg font-bold text-white">No results</div>
+    <div class="mt-1 text-sm text-white/60">Try another keyword or category.</div>
   </div>
 </section>
