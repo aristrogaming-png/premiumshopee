@@ -13,6 +13,9 @@ export class ProductListComponent implements OnInit {
   searchTerm = '';
   categories: string[] = [];
   selectedCategory = '';
+  isLoading = true;
+   errorMsg = '';
+
 
   // WhatsApp contact number (international format without plus sign)
   private phoneNumber = '918247276831';
@@ -22,17 +25,25 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.fetchProducts();
   }
-
+  
   fetchProducts(): void {
-    this.productService.getProducts().subscribe(data => {
-      this.products = data;
-      // Collect unique categories from the fetched products
-      this.categories = Array.from(
-        new Set(this.products.map(p => p.category))
-      );
-      this.applyFilters();
+    this.isLoading = true;
+    this.errorMsg = '';
+  
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+        this.categories = Array.from(new Set(this.products.map(p => p.category)));
+        this.applyFilters();
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMsg = 'Failed to load products. Please try again.';
+        this.isLoading = false;
+      }
     });
   }
+  
 
   onSearchChange(): void {
     this.applyFilters();
