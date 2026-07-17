@@ -2,7 +2,7 @@
   {
     "id": "prod_spotify",
     "name": "Spotify Premium",
-    "price": 30,
+    "price": 29,
     "category": "Music",
     "imageUrl": "https://placehold.co/600x338/1DB954/ffffff.png?text=Spotify+Premium&font=montserrat",
     "description": "Enjoy ad-free music streaming with Spotify Premium. Unlimited skips and offline listening included.",
