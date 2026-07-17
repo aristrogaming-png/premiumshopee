@@ -4,8 +4,8 @@
     "name": "Spotify Premium",
     "price": 30,
     "category": "Music",
-    "imageUrl": "https://via.placeholder.com/300x200.png?text=Spotify",
-    "description": "Enjoy ad‑free music streaming with Spotify Premium. Unlimited skips and offline listening included.",
+    "imageUrl": "https://placehold.co/600x338/1DB954/ffffff.png?text=Spotify+Premium&font=montserrat",
+    "description": "Enjoy ad-free music streaming with Spotify Premium. Unlimited skips and offline listening included.",
     "stock": 10
   },
   {
@@ -13,7 +13,7 @@
     "name": "Netflix Standard",
     "price": 40,
     "category": "Video",
-    "imageUrl": "https://via.placeholder.com/300x200.png?text=Netflix",
+    "imageUrl": "https://placehold.co/600x338/E50914/ffffff.png?text=Netflix+Standard&font=montserrat",
     "description": "Watch unlimited movies and TV shows in HD on two devices simultaneously with Netflix Standard.",
     "stock": 8
   },
@@ -22,8 +22,8 @@
     "name": "LinkedIn Premium",
     "price": 60,
     "category": "Business",
-    "imageUrl": "https://via.placeholder.com/300x200.png?text=LinkedIn",
-    "description": "Boost your professional presence with LinkedIn Premium: see who’s viewed your profile, send InMail messages and more.",
+    "imageUrl": "https://placehold.co/600x338/0A66C2/ffffff.png?text=LinkedIn+Premium&font=montserrat",
+    "description": "Boost your professional presence with LinkedIn Premium: see who's viewed your profile, send InMail messages and more.",
     "stock": 3
   },
   {
@@ -31,7 +31,7 @@
     "name": "Canva Pro",
     "price": 25,
     "category": "Design",
-    "imageUrl": "https://via.placeholder.com/300x200.png?text=Canva",
+    "imageUrl": "https://placehold.co/600x338/8B3DFF/ffffff.png?text=Canva+Pro&font=montserrat",
     "description": "Create stunning designs easily with Canva Pro. Access premium templates, fonts and photos.",
     "stock": 0
   }

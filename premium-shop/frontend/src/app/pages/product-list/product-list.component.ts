@@ -82,7 +82,9 @@ export class ProductListComponent implements OnInit {
 
   onImageError(event: Event): void {
     const img = event.target as HTMLImageElement;
-    img.src = '/assets/placeholder.jpg';
+    if (!img.src.endsWith('/assets/placeholder.jpg')) {
+      img.src = '/assets/placeholder.jpg';
+    }
   }
   
 }
