@@ -1,10 +1,9 @@
 <!-- HERO -->
 <section class="relative overflow-hidden rounded-3xl border bg-white">
   <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-95"></div>
-  <div class="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
-  <div class="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
-
-  <div class="relative px-6 py-10 sm:px-10 sm:py-14">
+  <div class="float-one absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div> 
+  <div class="float-two absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div> 
+  <div class="hero-content relative px-6 py-10 sm:px-10 sm:py-14">
     <div class="max-w-2xl">
       <div
         class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/90">
@@ -29,23 +28,23 @@
         </a>
 
         <button type="button" (click)="selectCategory('')"
-          class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15 transition">
+          class="category-pill inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15 transition">
           View all categories
         </button>
       </div>
 
       <div class="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
-        <div class="rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
+        <div class="stat-card rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
           <div class="text-lg font-bold text-white sm:text-2xl">{{ products.length }}</div>
           <div class="text-xs text-white/70 sm:text-sm">Plans available</div>
         </div>
 
-        <div class="rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
+        <div class="stat-card rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
           <div class="text-lg font-bold text-white sm:text-2xl">24/7</div>
           <div class="text-xs text-white/70 sm:text-sm">WhatsApp support</div>
         </div>
 
-        <div class="rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
+        <div class="stat-card rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
           <div class="text-lg font-bold text-white sm:text-2xl">Fast</div>
           <div class="text-xs text-white/70 sm:text-sm">Activation</div>
         </div>
@@ -56,17 +55,17 @@
 
 <!-- TRUST / FEATURES STRIP -->
 <section class="mt-8 grid gap-4 sm:grid-cols-3">
-  <div class="rounded-2xl border bg-white p-5">
+  <div class="feature-card rounded-2xl border bg-white p-5">
     <div class="text-sm font-semibold text-gray-900">Live stock system</div>
     <div class="mt-1 text-sm text-gray-600">Low-stock warnings and sold-out protection built in.</div>
   </div>
 
-  <div class="rounded-2xl border bg-white p-5">
+  <div class="feature-card rounded-2xl border bg-white p-5">
     <div class="text-sm font-semibold text-gray-900">Clean pricing</div>
     <div class="mt-1 text-sm text-gray-600">Transparent deals — no confusion, no hidden surprises.</div>
   </div>
 
-  <div class="rounded-2xl border bg-white p-5">
+  <div class="feature-card rounded-2xl border bg-white p-5">
     <div class="text-sm font-semibold text-gray-900">Instant purchase</div>
     <div class="mt-1 text-sm text-gray-600">One click opens WhatsApp with a pre-filled message.</div>
   </div>
@@ -82,7 +81,8 @@
 
     <!-- Search -->
     <div class="w-full sm:w-96">
-      <div class="flex items-center gap-2 rounded-2xl border bg-white px-4 py-3">
+      <div
+  class="search-box flex items-center gap-2 rounded-2xl border bg-white px-4 py-3">
         <span class="text-gray-400">🔎</span>
         <input type="text" class="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
           placeholder="Search: Spotify, Netflix, LinkedIn…" [(ngModel)]="searchTerm"
@@ -98,7 +98,7 @@
   <!-- Category pills -->
   <div class="mt-4 flex flex-wrap gap-2">
     <button type="button" (click)="selectCategory('')"
-      class="rounded-full px-4 py-2 text-sm font-semibold transition border"
+      class="category-pill rounded-full px-4 py-2 text-sm font-semibold transition border"
       [ngClass]="selectedCategory === '' ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'">
       All
     </button>
@@ -133,15 +133,32 @@
 
   <!-- Grid -->
   <div *ngIf="!isLoading && !errorMsg" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <div *ngFor="let product of filteredProducts"
-      class="group overflow-hidden rounded-3xl border bg-white shadow-sm transition hover:shadow-lg"
+    <div *ngFor="let product of displayedProducts; let i = index"
+      class="product-card group overflow-hidden rounded-3xl border bg-white shadow-sm" [style.animation-delay.ms]="i * 70"
       [ngClass]="product.stock === 0 ? 'opacity-60' : ''">
       <div class="relative">
         <div class="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
-          <img [src]="product.imageUrl || '/assets/placeholder.jpg'" [alt]="product.name" loading="lazy"
-            decoding="async" (error)="onImageError($event)"
-            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
-        </div>
+        
+          <!--
+                    Image tag DOES NOT EXIST initially.
+                    So browser cannot download the image yet.
+                  -->
+        
+          <img *ngIf="isImageAllowed(product.id) && product.imageUrl" [src]="product.imageUrl" [alt]="product.name"
+            decoding="async" (load)="onImageFinished(product.id)" (error)="onImageError($event, product.id)"
+            class="product-image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+        
+          <!--
+                    Customer sees lightweight placeholder
+                    while image is waiting.
+                  -->
+        
+          <div *ngIf="!isImageAllowed(product.id) || !product.imageUrl"
+            class="absolute inset-0 flex items-center justify-center bg-gray-100 text-xs font-medium text-gray-400">
+        
+            {{ product.imageUrl ? 'Image loading soon…' : 'No image' }}
+        
+          </div>  </div>
 
         <!-- Badges -->
         <div class="absolute left-3 top-3 flex gap-2">
@@ -181,8 +198,7 @@
           </a>
 
           <button type="button"
-            class="flex-1 rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white hover:opacity-90 transition disabled:cursor-not-allowed disabled:opacity-40"
-            (click)="buyNow(product)" [disabled]="product.stock === 0">
+          class="buy-button flex-1 rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white hover:opacity-90 transition disabled:cursor-not-allowed disabled:opacity-40"   (click)="buyNow(product)" [disabled]="product.stock === 0">
             Buy
           </button>
         </div>
@@ -208,5 +224,18 @@
       (click)="searchTerm=''; selectCategory(''); onSearchChange()">
       Reset filters
     </button>
+  </div>
+  <!-- LOAD MORE PRODUCTS -->
+  
+  <div *ngIf="!isLoading && !errorMsg && hasMoreProducts" class="mt-8 text-center">
+  
+    <button type="button"
+      class="rounded-2xl bg-black px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
+      (click)="loadMore()">
+  
+      Load more products
+  
+    </button>
+  
   </div>
 </section>
