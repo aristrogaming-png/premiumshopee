@@ -1,17 +1,94 @@
 <!DOCTYPE html>
+
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Premium Dukan</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!--
-      Tailwind CSS via CDN. In a production environment you might want
-      to install Tailwind as a build‑time dependency and generate a
-      purged stylesheet instead of including the full library.
-    -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-50 text-gray-900">
-    <app-root></app-root>
-  </body>
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <title>
+    Premium Dukan
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <!-- TAILWIND -->
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+
+  <!-- ENABLE CLASS-BASED DARK MODE -->
+
+  <script>
+
+    tailwind.config = {
+      darkMode: 'class'
+    };
+
+  </script>
+
+
+  <!--
+    Detect theme BEFORE Angular loads.
+
+    This prevents the website from flashing
+    white before switching to dark mode.
+  -->
+
+  <script>
+
+    (function () {
+
+      try {
+
+        var savedTheme =
+          localStorage.getItem('theme');
+
+        var prefersDark =
+          window.matchMedia(
+            '(prefers-color-scheme: dark)'
+          ).matches;
+
+        var useDark =
+          savedTheme
+            ? savedTheme === 'dark'
+            : prefersDark;
+
+        document
+          .documentElement
+          .classList
+          .toggle(
+            'dark',
+            useDark
+          );
+
+      } catch (e) {
+
+        // Angular will initialize theme later
+
+      }
+
+    })();
+
+  </script>
+
+</head>
+
+
+<body class="
+    bg-gray-50
+    text-gray-900
+
+    transition-colors
+    duration-300
+
+    dark:bg-gray-950
+    dark:text-gray-100
+  ">
+
+  <app-root></app-root>
+
+</body>
+
 </html>

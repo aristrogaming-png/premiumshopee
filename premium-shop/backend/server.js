@@ -178,7 +178,27 @@ const server = http.createServer(async (req, res) => {
         ];
       }
 
-      const products = await Product.find(filter).sort({ createdAt: -1 });
+      const products = await Product.find(filter);
+
+      // Sort products:
+      // 1. In-stock products first
+      // 2. Out-of-stock products last
+      // 3. Within each group, recently updated products first
+      products.sort((a, b) => {
+      
+        const aOutOfStock = a.stock <= 0;
+        const bOutOfStock = b.stock <= 0;
+      
+        // Out-of-stock always goes to the bottom
+        if (aOutOfStock !== bOutOfStock) {
+          return aOutOfStock ? 1 : -1;
+        }
+      
+        // Most recently edited/created product first
+        return new Date(b.updatedAt).getTime() -
+               new Date(a.updatedAt).getTime();
+      });
+      
       return json(res, 200, products);
     } catch (err) {
       return json(res, 500, { message: 'Server error', error: err.message });

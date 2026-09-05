@@ -2,20 +2,28 @@
    display: block;
 }
 
+
 /* ================================
     TEXT CLAMP
  ================================ */
 
 .line-clamp-2,
 .line-clamp-3 {
+
    display: -webkit-box;
-   -webkit-box-orient: vertical;
+
+   -webkit-box-orient:
+      vertical;
+
    overflow: hidden;
+
 }
+
 
 .line-clamp-2 {
    -webkit-line-clamp: 2;
 }
+
 
 .line-clamp-3 {
    -webkit-line-clamp: 3;
@@ -23,60 +31,97 @@
 
 
 /* ================================
-    HERO ANIMATION
+    HERO ENTRANCE
  ================================ */
 
 .hero-content {
-   animation: heroEnter 0.8s ease-out both;
+
+   animation:
+      heroEnter 0.8s ease-out both;
+
 }
 
+
 @keyframes heroEnter {
+
    from {
+
       opacity: 0;
-      transform: translateY(25px);
+
+      transform:
+         translateY(24px);
+
    }
 
    to {
+
       opacity: 1;
-      transform: translateY(0);
+
+      transform:
+         translateY(0);
+
    }
+
 }
 
 
 /* ================================
-    FLOATING HERO BLOBS
+    FLOATING BACKGROUND
  ================================ */
 
 .float-one {
-   animation: floatOne 7s ease-in-out infinite;
+
+   animation:
+      floatOne 7s ease-in-out infinite;
+
 }
 
+
 .float-two {
-   animation: floatTwo 9s ease-in-out infinite;
+
+   animation:
+      floatTwo 9s ease-in-out infinite;
+
 }
+
 
 @keyframes floatOne {
 
    0%,
    100% {
-      transform: translate(0, 0) scale(1);
+
+      transform:
+         translate(0, 0) scale(1);
+
    }
 
    50% {
-      transform: translate(-25px, 25px) scale(1.1);
+
+      transform:
+         translate(-24px, 24px) scale(1.08);
+
    }
+
 }
+
 
 @keyframes floatTwo {
 
    0%,
    100% {
-      transform: translate(0, 0);
+
+      transform:
+         translate(0, 0);
+
    }
 
    50% {
-      transform: translate(30px, -20px);
+
+      transform:
+         translate(28px, -20px);
+
    }
+
 }
 
 
@@ -84,18 +129,33 @@
     FEATURE CARDS
  ================================ */
 
-.feature-card {
+.feature-card,
+.stat-card {
+
    transition:
       transform 0.3s ease,
       box-shadow 0.3s ease,
       border-color 0.3s ease;
+
 }
 
+
 .feature-card:hover {
-   transform: translateY(-6px);
+
+   transform:
+      translateY(-6px);
+
    box-shadow:
       0 20px 40px rgba(0, 0, 0, 0.08);
-   border-color: #d1d5db;
+
+}
+
+
+.stat-card:hover {
+
+   transform:
+      translateY(-4px);
+
 }
 
 
@@ -104,57 +164,135 @@
  ================================ */
 
 .product-card {
+
    opacity: 0;
 
    animation:
-      productEnter 0.55s cubic-bezier(.22, 1, .36, 1) forwards;
+      productEnter 0.55s cubic-bezier(0.22,
+         1,
+         0.36,
+         1) forwards;
 
    transition:
       transform 0.3s ease,
       box-shadow 0.3s ease,
       border-color 0.3s ease;
+
 }
+
 
 .product-card:hover {
-   transform: translateY(-7px);
+
+   transform:
+      translateY(-7px);
+
    box-shadow:
       0 22px 50px rgba(0, 0, 0, 0.10);
+
 }
 
+
 @keyframes productEnter {
+
    from {
+
       opacity: 0;
+
       transform:
-         translateY(25px) scale(0.97);
+         translateY(24px) scale(0.97);
+
    }
 
    to {
+
       opacity: 1;
+
       transform:
          translateY(0) scale(1);
+
    }
+
 }
 
 
 /* ================================
-    IMAGE REVEAL
+    PRODUCT IMAGE REVEAL
  ================================ */
 
 .product-image {
+
    animation:
       imageReveal 0.55s ease-out both;
+
 }
 
+
 @keyframes imageReveal {
+
    from {
+
       opacity: 0;
-      transform: scale(1.06);
+
+      transform:
+         scale(1.05);
+
    }
 
    to {
+
       opacity: 1;
-      transform: scale(1);
+
+      transform:
+         scale(1);
+
    }
+
+}
+
+
+/* ================================
+    IMAGE WAITING SHIMMER
+ ================================ */
+
+.image-placeholder::after {
+
+   content: '';
+
+   position: absolute;
+
+   inset: 0;
+
+   transform:
+      translateX(-100%);
+
+   background:
+
+      linear-gradient(90deg,
+
+         transparent,
+
+         rgba(255,
+            255,
+            255,
+            0.28),
+
+         transparent);
+
+   animation:
+      placeholderShimmer 1.5s infinite;
+
+}
+
+
+@keyframes placeholderShimmer {
+
+   100% {
+
+      transform:
+         translateX(100%);
+
+   }
+
 }
 
 
@@ -163,90 +301,125 @@
  ================================ */
 
 .search-box {
+
    transition:
       box-shadow 0.3s ease,
       border-color 0.3s ease,
       transform 0.3s ease;
+
 }
 
-.search-box:focus-within {
-   border-color: #111827;
-   box-shadow:
-      0 0 0 4px rgba(17, 24, 39, 0.08);
 
-   transform: translateY(-1px);
+.search-box:focus-within {
+
+   border-color:
+      #111827;
+
+   box-shadow:
+      0 0 0 4px rgba(17,
+         24,
+         39,
+         0.08);
+
+   transform:
+      translateY(-1px);
+
+}
+
+
+/* DARK SEARCH */
+
+:host-context(.dark) .search-box:focus-within {
+
+   border-color:
+      #9ca3af;
+
+   box-shadow:
+      0 0 0 4px rgba(255,
+         255,
+         255,
+         0.08);
+
 }
 
 
 /* ================================
-    CATEGORY BUTTON
+    CATEGORY PILLS
  ================================ */
 
 .category-pill {
+
    transition:
       transform 0.2s ease,
       box-shadow 0.2s ease,
       background-color 0.2s ease;
+
 }
 
+
 .category-pill:hover {
-   transform: translateY(-2px);
+
+   transform:
+      translateY(-2px);
+
 }
 
 
 /* ================================
-    BUY BUTTON
+    BUY BUTTON SHINE
  ================================ */
 
 .buy-button {
+
    position: relative;
+
    overflow: hidden;
+
 }
 
+
 .buy-button::before {
-   content: "";
+
+   content: '';
 
    position: absolute;
 
    top: 0;
+
    left: -120%;
 
    width: 80%;
+
    height: 100%;
 
    background:
+
       linear-gradient(120deg,
+
          transparent,
-         rgba(255, 255, 255, 0.25),
+
+         rgba(255,
+            255,
+            255,
+            0.25),
+
          transparent);
 
-   transition: left 0.55s ease;
+   transition:
+      left 0.55s ease;
+
 }
+
 
 .buy-button:hover::before {
+
    left: 130%;
+
 }
 
 
 /* ================================
-    STAT CARDS
- ================================ */
-
-.stat-card {
-   transition:
-      transform 0.3s ease,
-      background-color 0.3s ease;
-}
-
-.stat-card:hover {
-   transform: translateY(-4px);
-   background-color:
-      rgba(255, 255, 255, 0.1);
-}
-
-
-/* ================================
-    RESPECT REDUCED MOTION
+    ACCESSIBILITY
  ================================ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -254,7 +427,14 @@
    *,
    *::before,
    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
+
+      animation-duration:
+         0.01ms !important;
+
+      animation-iteration-count:
+         1 !important;
+
+      transition-duration:
+         0.01ms !important;
+
    }}

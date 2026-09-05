@@ -1,46 +1,263 @@
-<div *ngIf="product; else loading">
-  <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-    <img [src]="product!.imageUrl" [alt]="product!.name" class="w-full h-64 object-cover" />
+<div *ngIf="
+    product;
+    else loading
+  ">
+
+  <div class="
+      mx-auto
+      max-w-3xl
+
+      overflow-hidden
+
+      rounded-2xl
+
+      border
+      border-gray-200
+
+      bg-white
+
+      shadow-md
+
+      dark:border-gray-700
+      dark:bg-gray-900
+    ">
+
+
+    <!-- IMAGE -->
+
+    <div class="
+        bg-gray-100
+        dark:bg-gray-800
+      ">
+
+      <img [src]="product!.imageUrl" [alt]="product!.name" class="
+          h-64
+          w-full
+          object-cover
+
+          sm:h-80
+        " />
+
+    </div>
+
+
+    <!-- DETAILS -->
 
     <div class="p-6">
-      <h2 class="text-2xl font-bold mb-2">{{ product!.name }}</h2>
 
-      <!-- ✅ FIXED DESCRIPTION -->
-      <!-- ✅ RESPONSIVE DESCRIPTION -->
-      <div class="mb-4 rounded-xl border bg-gray-50 p-3 sm:p-4">
-        <p class="text-sm sm:text-base text-gray-700 leading-6 whitespace-pre-wrap break-words overflow-hidden"
-          style="overflow-wrap:anywhere; word-break:break-word;">
+
+      <!-- NAME -->
+
+      <h2 class="
+          mb-2
+
+          text-2xl
+          font-bold
+          text-gray-900
+
+          dark:text-white
+        ">
+
+        {{ product!.name }}
+
+      </h2>
+
+
+
+      <!-- DESCRIPTION -->
+
+      <div class="
+          mb-4
+
+          rounded-xl
+
+          border
+          border-gray-200
+
+          bg-gray-50
+
+          p-3
+
+          dark:border-gray-700
+          dark:bg-gray-800
+
+          sm:p-4
+        ">
+
+        <p class="
+            overflow-hidden
+
+            whitespace-pre-wrap
+            break-words
+
+            text-sm
+            leading-6
+            text-gray-700
+
+            dark:text-gray-300
+
+            sm:text-base
+          " style="
+            overflow-wrap:anywhere;
+            word-break:break-word;
+          ">
+
           {{ product!.description }}
+
         </p>
+
       </div>
 
 
-      <p class="text-xl font-semibold mb-2">Price: $ {{ product!.price }}</p>
 
-      <p class="mb-2">
-        <strong>Category:</strong> {{ product!.category }}
+      <!-- PRICE -->
+
+      <p class="
+          mb-2
+
+          text-xl
+          font-semibold
+          text-gray-900
+
+          dark:text-white
+        ">
+
+        Price:
+        $ {{ product!.price }}
+
       </p>
 
-      <p class="mb-4">
-        <strong>Stock:</strong>
+
+
+      <!-- CATEGORY -->
+
+      <p class="
+          mb-2
+
+          text-gray-700
+
+          dark:text-gray-300
+        ">
+
+        <strong>
+          Category:
+        </strong>
+
+        {{ product!.category }}
+
+      </p>
+
+
+
+      <!-- STOCK -->
+
+      <p class="
+          mb-4
+
+          text-gray-700
+
+          dark:text-gray-300
+        ">
+
+        <strong>
+          Stock:
+        </strong>
+
+
         <span [ngClass]="{
-            'text-red-600': product!.stock === 0,
-            'text-yellow-600': product!.stock > 0 && product!.stock < 5,
-            'text-green-600': product!.stock >= 5
+
+            'text-red-600 dark:text-red-400':
+              product!.stock === 0,
+
+            'text-yellow-600 dark:text-yellow-400':
+              product!.stock > 0
+              &&
+              product!.stock < 5,
+
+            'text-green-600 dark:text-green-400':
+              product!.stock >= 5
+
           }">
+
           {{ product!.stock }}
+
         </span>
+
       </p>
 
-      <button
-        class="bg-green-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-600 disabled:bg-gray-400 transition"
-        (click)="buyNow()" [disabled]="product!.stock === 0">
+
+
+      <!-- BUY -->
+
+      <button type="button" class="
+              rounded-xl
+          
+              bg-emerald-600
+          
+              px-6
+              py-3
+          
+              font-semibold
+              text-white
+          
+              shadow-sm
+              shadow-emerald-600/20
+          
+              transition-all
+              duration-300
+          
+              hover:-translate-y-0.5
+              hover:bg-emerald-700
+              hover:shadow-lg
+              hover:shadow-emerald-600/25
+          
+              disabled:cursor-not-allowed
+              disabled:bg-gray-400
+              disabled:opacity-60
+              disabled:shadow-none
+          
+              dark:bg-emerald-500
+              dark:text-white
+              dark:hover:bg-emerald-400
+            " (click)="buyNow()" [disabled]="product!.stock === 0">
         Buy Now
-      </button>
+        </button>
+
     </div>
+
   </div>
+
 </div>
 
+
+
+<!-- LOADING -->
+
 <ng-template #loading>
-  <p class="text-center text-gray-500">Loading product details...</p>
+
+  <div class="
+      mx-auto
+      max-w-3xl
+
+      rounded-2xl
+
+      border
+      border-gray-200
+
+      bg-white
+
+      p-8
+
+      text-center
+      text-gray-500
+
+      dark:border-gray-700
+      dark:bg-gray-900
+      dark:text-gray-400
+    ">
+
+    Loading product details...
+
+  </div>
+
 </ng-template>

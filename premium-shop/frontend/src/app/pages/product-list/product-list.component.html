@@ -1,241 +1,1498 @@
-<!-- HERO -->
-<section class="relative overflow-hidden rounded-3xl border bg-white">
-  <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-95"></div>
-  <div class="float-one absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div> 
-  <div class="float-two absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div> 
-  <div class="hero-content relative px-6 py-10 sm:px-10 sm:py-14">
+<!-- ==============================
+     HERO
+================================ -->
+
+<section class="
+    relative
+    overflow-hidden
+    rounded-3xl
+
+    border
+    border-gray-800
+
+    bg-black
+
+    shadow-xl
+  ">
+
+  <div class="
+      absolute
+      inset-0
+
+      bg-gradient-to-br
+      from-black
+      via-gray-900
+      to-black
+
+      opacity-95
+    ">
+  </div>
+
+
+  <!-- FLOATING BLOBS -->
+
+  <div class="
+      float-one
+
+      absolute
+      -right-24
+      -top-24
+
+      h-72
+      w-72
+
+      rounded-full
+
+      bg-white/10
+
+      blur-3xl
+    ">
+  </div>
+
+
+  <div class="
+      float-two
+
+      absolute
+      -bottom-24
+      -left-24
+
+      h-72
+      w-72
+
+      rounded-full
+
+      bg-white/10
+
+      blur-3xl
+    ">
+  </div>
+
+
+  <!-- HERO CONTENT -->
+
+  <div class="
+      hero-content
+
+      relative
+
+      px-6
+      py-10
+
+      sm:px-10
+      sm:py-14
+    ">
+
     <div class="max-w-2xl">
-      <div
-        class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white/90">
-        <span class="h-2 w-2 rounded-full bg-green-400"></span>
+
+
+      <!-- STATUS -->
+
+      <div class="
+          inline-flex
+
+          items-center
+          gap-2
+
+          rounded-full
+
+          border
+          border-white/15
+
+          bg-white/10
+
+          px-3
+          py-1
+
+          text-xs
+          font-medium
+          text-white/90
+        ">
+
+        <span class="
+            h-2
+            w-2
+            rounded-full
+            bg-green-400
+          ">
+        </span>
+
         Instant Activation • WhatsApp Support
+
       </div>
 
-      <h1 class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+
+      <!-- HEADING -->
+
+      <h1 class="
+          mt-4
+
+          text-3xl
+          font-extrabold
+          tracking-tight
+          text-white
+
+          sm:text-5xl
+        ">
+
         Premium digital subscriptions,
-        <span class="text-white/80">without the hassle.</span>
+
+        <span class="text-white/80">
+
+          without the hassle.
+
+        </span>
+
       </h1>
 
-      <p class="mt-4 text-sm leading-6 text-white/80 sm:text-base">
-        Browse verified plans, check live stock, and buy instantly via WhatsApp. Clean pricing, fast delivery, and
-        support when you need it.
+
+      <!-- DESCRIPTION -->
+
+      <p class="
+          mt-4
+
+          text-sm
+          leading-6
+          text-white/80
+
+          sm:text-base
+        ">
+
+        Browse verified plans, check live stock,
+        and buy instantly via WhatsApp.
+        Clean pricing, fast delivery, and support
+        when you need it.
+
       </p>
 
-      <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-        <a href="#catalog"
-          class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-gray-900 hover:bg-white/90 transition">
+
+      <!-- HERO BUTTONS -->
+
+      <div class="
+          mt-6
+
+          flex
+          flex-col
+          gap-3
+
+          sm:flex-row
+        ">
+
+        <a href="#catalog" class="
+            inline-flex
+
+            items-center
+            justify-center
+
+            rounded-2xl
+
+            bg-white
+
+            px-5
+            py-3
+
+            text-sm
+            font-semibold
+            text-gray-900
+
+            transition
+
+            hover:bg-white/90
+          ">
+
           Explore catalog
+
         </a>
 
-        <button type="button" (click)="selectCategory('')"
-          class="category-pill inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white hover:bg-white/15 transition">
+
+        <button type="button" (click)="selectCategory('')" class="
+            inline-flex
+
+            items-center
+            justify-center
+
+            rounded-2xl
+
+            border
+            border-white/20
+
+            bg-white/10
+
+            px-5
+            py-3
+
+            text-sm
+            font-semibold
+            text-white
+
+            transition
+
+            hover:bg-white/15
+          ">
+
           View all categories
+
         </button>
+
       </div>
 
-      <div class="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
-        <div class="stat-card rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
-          <div class="text-lg font-bold text-white sm:text-2xl">{{ products.length }}</div>
-          <div class="text-xs text-white/70 sm:text-sm">Plans available</div>
+
+      <!-- STATS -->
+
+      <div class="
+          mt-8
+
+          grid
+          grid-cols-3
+
+          gap-3
+
+          sm:gap-4
+        ">
+
+
+        <div class="
+            stat-card
+
+            rounded-2xl
+
+            border
+            border-white/15
+
+            bg-white/5
+
+            p-3
+
+            sm:p-4
+          ">
+
+          <div class="
+              text-lg
+              font-bold
+              text-white
+
+              sm:text-2xl
+            ">
+
+            {{ products.length }}
+
+          </div>
+
+          <div class="
+              text-xs
+              text-white/70
+
+              sm:text-sm
+            ">
+
+            Plans available
+
+          </div>
+
         </div>
 
-        <div class="stat-card rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
-          <div class="text-lg font-bold text-white sm:text-2xl">24/7</div>
-          <div class="text-xs text-white/70 sm:text-sm">WhatsApp support</div>
+
+        <div class="
+            stat-card
+
+            rounded-2xl
+
+            border
+            border-white/15
+
+            bg-white/5
+
+            p-3
+
+            sm:p-4
+          ">
+
+          <div class="
+              text-lg
+              font-bold
+              text-white
+
+              sm:text-2xl
+            ">
+
+            24/7
+
+          </div>
+
+          <div class="
+              text-xs
+              text-white/70
+
+              sm:text-sm
+            ">
+
+            WhatsApp support
+
+          </div>
+
         </div>
 
-        <div class="stat-card rounded-2xl border border-white/15 bg-white/5 p-3 sm:p-4">
-          <div class="text-lg font-bold text-white sm:text-2xl">Fast</div>
-          <div class="text-xs text-white/70 sm:text-sm">Activation</div>
+
+        <div class="
+            stat-card
+
+            rounded-2xl
+
+            border
+            border-white/15
+
+            bg-white/5
+
+            p-3
+
+            sm:p-4
+          ">
+
+          <div class="
+              text-lg
+              font-bold
+              text-white
+
+              sm:text-2xl
+            ">
+
+            Fast
+
+          </div>
+
+          <div class="
+              text-xs
+              text-white/70
+
+              sm:text-sm
+            ">
+
+            Activation
+
+          </div>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<!-- TRUST / FEATURES STRIP -->
-<section class="mt-8 grid gap-4 sm:grid-cols-3">
-  <div class="feature-card rounded-2xl border bg-white p-5">
-    <div class="text-sm font-semibold text-gray-900">Live stock system</div>
-    <div class="mt-1 text-sm text-gray-600">Low-stock warnings and sold-out protection built in.</div>
+
+
+<!-- ==============================
+     FEATURES
+================================ -->
+
+<section class="
+    mt-8
+
+    grid
+    gap-4
+
+    sm:grid-cols-3
+  ">
+
+
+  <div class="
+      feature-card
+
+      rounded-2xl
+
+      border
+      border-gray-200
+
+      bg-white
+
+      p-5
+
+      dark:border-gray-700
+      dark:bg-gray-900
+    ">
+
+    <div class="
+        text-sm
+        font-semibold
+        text-gray-900
+
+        dark:text-white
+      ">
+      Live stock system
+    </div>
+
+    <div class="
+        mt-1
+
+        text-sm
+        text-gray-600
+
+        dark:text-gray-300
+      ">
+      Low-stock warnings and sold-out protection built in.
+    </div>
+
   </div>
 
-  <div class="feature-card rounded-2xl border bg-white p-5">
-    <div class="text-sm font-semibold text-gray-900">Clean pricing</div>
-    <div class="mt-1 text-sm text-gray-600">Transparent deals — no confusion, no hidden surprises.</div>
+
+  <div class="
+      feature-card
+
+      rounded-2xl
+
+      border
+      border-gray-200
+
+      bg-white
+
+      p-5
+
+      dark:border-gray-700
+      dark:bg-gray-900
+    ">
+
+    <div class="
+        text-sm
+        font-semibold
+        text-gray-900
+
+        dark:text-white
+      ">
+      Clean pricing
+    </div>
+
+    <div class="
+        mt-1
+
+        text-sm
+        text-gray-600
+
+        dark:text-gray-300
+      ">
+      Transparent deals — no confusion, no hidden surprises.
+    </div>
+
   </div>
 
-  <div class="feature-card rounded-2xl border bg-white p-5">
-    <div class="text-sm font-semibold text-gray-900">Instant purchase</div>
-    <div class="mt-1 text-sm text-gray-600">One click opens WhatsApp with a pre-filled message.</div>
+
+  <div class="
+      feature-card
+
+      rounded-2xl
+
+      border
+      border-gray-200
+
+      bg-white
+
+      p-5
+
+      dark:border-gray-700
+      dark:bg-gray-900
+    ">
+
+    <div class="
+        text-sm
+        font-semibold
+        text-gray-900
+
+        dark:text-white
+      ">
+      Instant purchase
+    </div>
+
+    <div class="
+        mt-1
+
+        text-sm
+        text-gray-600
+
+        dark:text-gray-300
+      ">
+      One click opens WhatsApp with a pre-filled message.
+    </div>
+
   </div>
+
 </section>
 
-<!-- CATALOG -->
+
+
+<!-- ==============================
+     CATALOG
+================================ -->
+
 <section id="catalog" class="mt-10">
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+
+
+  <!-- TITLE + SEARCH -->
+
+  <div class="
+      flex
+      flex-col
+      gap-3
+
+      sm:flex-row
+      sm:items-end
+      sm:justify-between
+    ">
+
+
     <div>
-      <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">Catalog</h2>
-      <p class="mt-1 text-sm text-gray-600">Search and filter plans in real time.</p>
+
+      <h2 class="
+          text-xl
+          font-bold
+          text-gray-900
+
+          dark:text-white
+
+          sm:text-2xl
+        ">
+
+        Catalog
+
+      </h2>
+
+
+      <p class="
+          mt-1
+          text-sm
+          text-gray-600
+
+          dark:text-gray-300
+        ">
+
+        Search and filter plans in real time.
+
+      </p>
+
     </div>
 
-    <!-- Search -->
+
+    <!-- SEARCH -->
+
     <div class="w-full sm:w-96">
-      <div
-  class="search-box flex items-center gap-2 rounded-2xl border bg-white px-4 py-3">
-        <span class="text-gray-400">🔎</span>
-        <input type="text" class="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
-          placeholder="Search: Spotify, Netflix, LinkedIn…" [(ngModel)]="searchTerm"
+
+      <div class="
+          search-box
+
+          flex
+          items-center
+          gap-2
+
+          rounded-2xl
+
+          border
+          border-gray-200
+
+          bg-white
+
+          px-4
+          py-3
+
+          dark:border-gray-700
+          dark:bg-gray-900
+        ">
+
+        <span class="text-gray-400">
+          🔎
+        </span>
+
+
+        <input type="text" class="
+            w-full
+
+            bg-transparent
+
+            text-sm
+            text-gray-900
+
+            outline-none
+
+            placeholder:text-gray-400
+
+            dark:text-white
+            dark:placeholder:text-gray-500
+          " placeholder="Search: Spotify, Netflix, LinkedIn…" [(ngModel)]="searchTerm"
           (ngModelChange)="onSearchChange()" />
-        <button *ngIf="searchTerm" class="text-xs font-semibold text-gray-500 hover:text-gray-900"
-          (click)="searchTerm=''; onSearchChange()" type="button">
+
+
+        <button *ngIf="searchTerm" type="button" (click)="
+            searchTerm='';
+            onSearchChange()
+          " class="
+            text-xs
+            font-semibold
+            text-gray-500
+
+            transition
+
+            hover:text-gray-900
+
+            dark:text-gray-400
+            dark:hover:text-white
+          ">
+
           Clear
+
         </button>
+
       </div>
+
     </div>
+
   </div>
 
-  <!-- Category pills -->
-  <div class="mt-4 flex flex-wrap gap-2">
-    <button type="button" (click)="selectCategory('')"
-      class="category-pill rounded-full px-4 py-2 text-sm font-semibold transition border"
-      [ngClass]="selectedCategory === '' ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'">
+
+
+  <!-- ============================
+       CATEGORY BUTTONS
+  ============================= -->
+
+  <div class="
+      mt-4
+
+      flex
+      flex-wrap
+      gap-2
+    ">
+
+
+    <!-- ALL -->
+
+    <button type="button" (click)="selectCategory('')" class="
+        category-pill
+
+        rounded-full
+
+        border
+
+        px-4
+        py-2
+
+        text-sm
+        font-semibold
+      " [ngClass]="
+        selectedCategory === ''
+
+          ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white'
+
+          : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
+      ">
+
       All
+
     </button>
 
-    <button *ngFor="let c of categories" type="button" (click)="selectCategory(c)"
-      class="rounded-full px-4 py-2 text-sm font-semibold transition border"
-      [ngClass]="selectedCategory === c ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'">
+
+    <!-- OTHER CATEGORIES -->
+
+    <button *ngFor="let c of categories" type="button" (click)="selectCategory(c)" class="
+        category-pill
+
+        rounded-full
+
+        border
+
+        px-4
+        py-2
+
+        text-sm
+        font-semibold
+      " [ngClass]="
+        selectedCategory === c
+
+          ? 'bg-black text-white border-black dark:bg-white dark:text-black dark:border-white'
+
+          : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
+      ">
+
       {{ c }}
+
     </button>
+
   </div>
 
-  <!-- ✅ Loading Skeleton -->
-  <div *ngIf="isLoading" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <div *ngFor="let _ of [1,2,3,4,5,6]" class="overflow-hidden rounded-3xl border bg-white shadow-sm animate-pulse">
-      <div class="aspect-[16/9] w-full bg-gray-200"></div>
-      <div class="p-5 space-y-3">
-        <div class="h-4 w-3/4 bg-gray-200 rounded"></div>
-        <div class="h-3 w-full bg-gray-200 rounded"></div>
-        <div class="h-3 w-5/6 bg-gray-200 rounded"></div>
-        <div class="flex gap-2 pt-2">
-          <div class="h-10 w-1/2 bg-gray-200 rounded-2xl"></div>
-          <div class="h-10 w-1/2 bg-gray-200 rounded-2xl"></div>
-        </div>
+
+
+  <!-- ============================
+       LOADING
+  ============================= -->
+
+  <div *ngIf="isLoading" class="
+      mt-6
+
+      grid
+      gap-4
+
+      sm:grid-cols-2
+      lg:grid-cols-3
+    ">
+
+
+    <div *ngFor="
+        let _ of
+        [1,2,3,4,5,6]
+      " class="
+        animate-pulse
+
+        overflow-hidden
+
+        rounded-3xl
+
+        border
+        border-gray-200
+
+        bg-white
+
+        shadow-sm
+
+        dark:border-gray-700
+        dark:bg-gray-900
+      ">
+
+
+      <div class="
+          aspect-[16/9]
+          w-full
+
+          bg-gray-200
+
+          dark:bg-gray-800
+        ">
       </div>
+
+
+      <div class="
+          space-y-3
+          p-5
+        ">
+
+
+        <div class="
+            h-4
+            w-3/4
+
+            rounded
+
+            bg-gray-200
+
+            dark:bg-gray-800
+          ">
+        </div>
+
+
+        <div class="
+            h-3
+            w-full
+
+            rounded
+
+            bg-gray-200
+
+            dark:bg-gray-800
+          ">
+        </div>
+
+
+        <div class="
+            h-3
+            w-5/6
+
+            rounded
+
+            bg-gray-200
+
+            dark:bg-gray-800
+          ">
+        </div>
+
+
+        <div class="
+            flex
+            gap-2
+            pt-2
+          ">
+
+
+          <div class="
+              h-10
+              w-1/2
+
+              rounded-2xl
+
+              bg-gray-200
+
+              dark:bg-gray-800
+            ">
+          </div>
+
+
+          <div class="
+              h-10
+              w-1/2
+
+              rounded-2xl
+
+              bg-gray-200
+
+              dark:bg-gray-800
+            ">
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
+
   </div>
 
-  <!-- ✅ Error -->
-  <div *ngIf="!isLoading && errorMsg" class="mt-6 rounded-2xl border bg-white p-4 text-sm text-red-600">
+
+
+  <!-- ============================
+       ERROR
+  ============================= -->
+
+  <div *ngIf="
+      !isLoading &&
+      errorMsg
+    " class="
+      mt-6
+
+      rounded-2xl
+
+      border
+      border-red-200
+
+      bg-white
+
+      p-4
+
+      text-sm
+      text-red-600
+
+      dark:border-red-900/60
+      dark:bg-gray-900
+      dark:text-red-400
+    ">
+
     {{ errorMsg }}
+
   </div>
 
-  <!-- Grid -->
-  <div *ngIf="!isLoading && !errorMsg" class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <div *ngFor="let product of displayedProducts; let i = index"
-      class="product-card group overflow-hidden rounded-3xl border bg-white shadow-sm" [style.animation-delay.ms]="i * 70"
-      [ngClass]="product.stock === 0 ? 'opacity-60' : ''">
+
+
+  <!-- ============================
+       PRODUCT GRID
+  ============================= -->
+
+  <div *ngIf="
+      !isLoading &&
+      !errorMsg
+    " class="
+      mt-6
+
+      grid
+      gap-4
+
+      sm:grid-cols-2
+      lg:grid-cols-3
+    ">
+
+
+    <div *ngFor="
+        let product
+        of displayedProducts;
+
+        let i = index
+      " class="
+        product-card
+
+        group
+
+        overflow-hidden
+
+        rounded-3xl
+
+        border
+        border-gray-200
+
+        bg-white
+
+        shadow-sm
+
+        dark:border-gray-700
+        dark:bg-gray-900
+      " [style.animation-delay.ms]="
+        i * 70
+      " [ngClass]="
+        product.stock === 0
+          ? 'opacity-60'
+          : ''
+      ">
+
+
+      <!-- IMAGE AREA -->
+
       <div class="relative">
-        <div class="relative aspect-[16/9] w-full overflow-hidden bg-gray-100">
-        
+
+
+        <div class="
+            relative
+
+            aspect-[16/9]
+
+            w-full
+
+            overflow-hidden
+
+            bg-gray-100
+
+            dark:bg-gray-800
+          ">
+
+
           <!--
-                    Image tag DOES NOT EXIST initially.
-                    So browser cannot download the image yet.
-                  -->
-        
-          <img *ngIf="isImageAllowed(product.id) && product.imageUrl" [src]="product.imageUrl" [alt]="product.name"
-            decoding="async" (load)="onImageFinished(product.id)" (error)="onImageError($event, product.id)"
-            class="product-image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-        
+            REAL IMAGE
+
+            This IMG element only
+            exists when the queue
+            allows this product.
+          -->
+
+          <img *ngIf="
+              isImageAllowed(
+                product.id
+              )
+              &&
+              product.imageUrl
+            " [src]="product.imageUrl" [alt]="product.name" decoding="async" (load)="
+              onImageFinished(
+                product.id
+              )
+            " (error)="
+              onImageError(
+                $event,
+                product.id
+              )
+            " class="
+              product-image
+
+              h-full
+              w-full
+
+              object-cover
+
+              transition-transform
+              duration-500
+
+              group-hover:scale-105
+            " />
+
+
           <!--
-                    Customer sees lightweight placeholder
-                    while image is waiting.
-                  -->
-        
-          <div *ngIf="!isImageAllowed(product.id) || !product.imageUrl"
-            class="absolute inset-0 flex items-center justify-center bg-gray-100 text-xs font-medium text-gray-400">
-        
-            {{ product.imageUrl ? 'Image loading soon…' : 'No image' }}
-        
-          </div>  </div>
+            PLACEHOLDER BEFORE
+            IMAGE LOADS
+          -->
 
-        <!-- Badges -->
-        <div class="absolute left-3 top-3 flex gap-2">
-          <span class="rounded-full bg-black/80 px-3 py-1 text-xs font-semibold text-white">
-            {{ product.category }}
-          </span>
+          <div *ngIf="
+              !isImageAllowed(
+                product.id
+              )
+              ||
+              !product.imageUrl
+            " class="
+              image-placeholder
 
-          <span *ngIf="product.stock > 0 && product.stock < 5"
-            class="rounded-full bg-yellow-500/90 px-3 py-1 text-xs font-semibold text-white">
-            Hurry • {{ product.stock }} left
-          </span>
+              absolute
+              inset-0
 
-          <span *ngIf="product.stock === 0"
-            class="rounded-full bg-gray-700/90 px-3 py-1 text-xs font-semibold text-white">
-            Out of stock
-          </span>
+              flex
+
+              items-center
+              justify-center
+
+              overflow-hidden
+
+              bg-gray-100
+
+              px-4
+
+              text-center
+              text-xs
+              font-medium
+              text-gray-400
+
+              dark:bg-gray-800
+              dark:text-gray-500
+            ">
+
+            {{
+            product.imageUrl
+            ? 'Image loading soon…'
+            : 'No image'
+            }}
+
+          </div>
+
         </div>
+
+
+
+        <!-- BADGES -->
+
+        <div class="
+            absolute
+
+            left-3
+            top-3
+
+            flex
+            flex-wrap
+            gap-2
+          ">
+
+
+          <!-- CATEGORY -->
+
+          <span class="
+              rounded-full
+
+              bg-black/80
+
+              px-3
+              py-1
+
+              text-xs
+              font-semibold
+              text-white
+            ">
+
+            {{ product.category }}
+
+          </span>
+
+
+
+          <!-- LOW STOCK -->
+
+          <span *ngIf="
+              product.stock > 0
+              &&
+              product.stock < 5
+            " class="
+              rounded-full
+
+              bg-yellow-500/90
+
+              px-3
+              py-1
+
+              text-xs
+              font-semibold
+              text-white
+            ">
+
+            Hurry • {{ product.stock }} left
+
+          </span>
+
+
+
+          <!-- SOLD OUT -->
+
+          <span *ngIf="
+              product.stock === 0
+            " class="
+              rounded-full
+
+              bg-gray-700/90
+
+              px-3
+              py-1
+
+              text-xs
+              font-semibold
+              text-white
+            ">
+
+            Out of stock
+
+          </span>
+
+        </div>
+
       </div>
+
+
+
+      <!-- PRODUCT CONTENT -->
 
       <div class="p-5">
-        <div class="flex items-start justify-between gap-3">
-          <h3 class="text-base font-bold text-gray-900 line-clamp-2">{{ product.name }}</h3>
-          <div class="shrink-0 text-right">
-            <div class="text-sm font-extrabold text-gray-900">$ {{ product.price }}</div>
-            <div class="text-xs text-gray-500">Best deal</div>
+
+
+        <div class="
+            flex
+
+            items-start
+            justify-between
+
+            gap-3
+          ">
+
+
+          <!-- NAME -->
+
+          <h3 class="
+              line-clamp-2
+
+              text-base
+              font-bold
+              text-gray-900
+
+              dark:text-white
+            ">
+
+            {{ product.name }}
+
+          </h3>
+
+
+
+          <!-- PRICE -->
+
+          <div class="
+              shrink-0
+              text-right
+            ">
+
+            <div class="
+                text-sm
+                font-extrabold
+                text-gray-900
+
+                dark:text-white
+              ">
+
+              $ {{ product.price }}
+
+            </div>
+
+
+            <div class="
+                text-xs
+                text-gray-500
+
+                dark:text-gray-400
+              ">
+
+              Best deal
+
+            </div>
+
           </div>
+
         </div>
 
-        <p class="mt-2 text-sm text-gray-600 line-clamp-3">
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="
+            line-clamp-3
+
+            mt-2
+
+            text-sm
+            text-gray-600
+
+            dark:text-gray-300
+          ">
+
           {{ product.description }}
+
         </p>
 
-        <div class="mt-4 flex gap-2">
-          <a [routerLink]="['/product', product.id]"
-            class="flex-1 text-center rounded-2xl border px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 transition">
+
+
+        <!-- BUTTONS -->
+
+        <div class="
+            mt-4
+            flex
+            gap-2
+          ">
+
+
+          <!-- DETAILS -->
+
+          <a [routerLink]="[
+              '/product',
+              product.id
+            ]" class="
+              flex-1
+
+              rounded-2xl
+
+              border
+              border-gray-200
+
+              px-4
+              py-3
+
+              text-center
+              text-sm
+              font-semibold
+              text-gray-800
+
+              transition
+
+              hover:bg-gray-50
+
+              dark:border-gray-700
+              dark:text-gray-200
+              dark:hover:bg-gray-800
+            ">
+
             Details
+
           </a>
 
-          <button type="button"
-          class="buy-button flex-1 rounded-2xl bg-black px-4 py-3 text-sm font-semibold text-white hover:opacity-90 transition disabled:cursor-not-allowed disabled:opacity-40"   (click)="buyNow(product)" [disabled]="product.stock === 0">
+
+
+          <!-- BUY -->
+
+          <button type="button" class="
+                      buy-button
+                      flex-1
+                      rounded-2xl
+                  
+                      bg-emerald-600
+                      px-4
+                      py-3
+                  
+                      text-sm
+                      font-semibold
+                      text-white
+                  
+                      shadow-sm
+                      shadow-emerald-600/20
+                  
+                      transition-all
+                      duration-300
+                  
+                      hover:-translate-y-0.5
+                      hover:bg-emerald-700
+                      hover:shadow-lg
+                      hover:shadow-emerald-600/25
+                  
+                      disabled:cursor-not-allowed
+                      disabled:bg-gray-400
+                      disabled:opacity-60
+                      disabled:shadow-none
+                  
+                      dark:bg-emerald-500
+                      dark:text-white
+                      dark:hover:bg-emerald-400
+                    " (click)="buyNow(product)" [disabled]="product.stock === 0">
             Buy
-          </button>
+            </button>
+
         </div>
 
-        <div class="mt-3 text-xs text-gray-500">
-          <span *ngIf="product.stock >= 5">In stock</span>
-          <span *ngIf="product.stock > 0 && product.stock < 5">Limited stock</span>
-          <span *ngIf="product.stock === 0">Restocking soon</span>
-          <span class="mx-2">•</span>
-          <span>WhatsApp checkout</span>
+
+
+        <!-- STOCK -->
+
+        <div class="
+            mt-3
+
+            text-xs
+            text-gray-500
+
+            dark:text-gray-400
+          ">
+
+
+          <span *ngIf="
+              product.stock >= 5
+            ">
+            In stock
+          </span>
+
+
+          <span *ngIf="
+              product.stock > 0
+              &&
+              product.stock < 5
+            ">
+            Limited stock
+          </span>
+
+
+          <span *ngIf="
+              product.stock === 0
+            ">
+            Restocking soon
+          </span>
+
+
+          <span class="mx-2">
+            •
+          </span>
+
+
+          <span>
+            WhatsApp checkout
+          </span>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
 
-  <!-- Empty state -->
-  <div *ngIf="!isLoading && !errorMsg && filteredProducts.length === 0"
-    class="mt-10 rounded-3xl border bg-white p-8 text-center">
-    <div class="text-lg font-bold text-gray-900">No matches found</div>
-    <div class="mt-1 text-sm text-gray-600">Try a different keyword or category.</div>
-    <button type="button"
-      class="mt-4 rounded-2xl bg-black px-5 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
-      (click)="searchTerm=''; selectCategory(''); onSearchChange()">
-      Reset filters
-    </button>
-  </div>
-  <!-- LOAD MORE PRODUCTS -->
-  
-  <div *ngIf="!isLoading && !errorMsg && hasMoreProducts" class="mt-8 text-center">
-  
-    <button type="button"
-      class="rounded-2xl bg-black px-6 py-3 text-sm font-semibold text-white hover:opacity-90 transition"
-      (click)="loadMore()">
-  
+
+
+  <!-- ============================
+       LOAD MORE
+  ============================= -->
+
+  <div *ngIf="
+      !isLoading
+      &&
+      !errorMsg
+      &&
+      hasMoreProducts
+    " class="
+      mt-8
+      text-center
+    ">
+
+    <button type="button" (click)="loadMore()" class="
+        rounded-2xl
+
+        bg-black
+
+        px-6
+        py-3
+
+        text-sm
+        font-semibold
+        text-white
+
+        shadow-sm
+
+        transition-all
+        duration-300
+
+        hover:-translate-y-0.5
+        hover:shadow-lg
+
+        dark:bg-white
+        dark:text-black
+      ">
+
       Load more products
-  
+
     </button>
-  
+
   </div>
+
+
+
+  <!-- ============================
+       EMPTY STATE
+  ============================= -->
+
+  <div *ngIf="
+      !isLoading
+      &&
+      !errorMsg
+      &&
+      filteredProducts.length === 0
+    " class="
+      mt-10
+
+      rounded-3xl
+
+      border
+      border-gray-200
+
+      bg-white
+
+      p-8
+
+      text-center
+
+      dark:border-gray-700
+      dark:bg-gray-900
+    ">
+
+
+    <div class="
+        text-lg
+        font-bold
+        text-gray-900
+
+        dark:text-white
+      ">
+
+      No matches found
+
+    </div>
+
+
+    <div class="
+        mt-1
+
+        text-sm
+        text-gray-600
+
+        dark:text-gray-300
+      ">
+
+      Try a different keyword or category.
+
+    </div>
+
+
+    <button type="button" class="
+        mt-4
+
+        rounded-2xl
+
+        bg-black
+
+        px-5
+        py-3
+
+        text-sm
+        font-semibold
+        text-white
+
+        transition
+
+        hover:opacity-90
+
+        dark:bg-white
+        dark:text-black
+      " (click)="
+        searchTerm='';
+        selectCategory('');
+        onSearchChange()
+      ">
+
+      Reset filters
+
+    </button>
+
+  </div>
+
 </section>

@@ -1,161 +1,367 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product';
+import {
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+
+import {
+  ProductService
+} from '../../services/product.service';
+
+import {
+  Product
+} from '../../models/product';
+
 
 @Component({
+
   selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+
+  templateUrl:
+    './product-list.component.html',
+
+  styleUrls: [
+    './product-list.component.css'
+  ]
+
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+
+
+export class ProductListComponent
+  implements OnInit, OnDestroy {
+
 
   products: Product[] = [];
+
   filteredProducts: Product[] = [];
 
+
   searchTerm = '';
+
   categories: string[] = [];
+
   selectedCategory = '';
 
+
   isLoading = true;
+
   errorMsg = '';
 
-  // Show only 12 products initially
+
+  /*
+   * Only render 12 cards initially.
+   *
+   * This prevents the browser from
+   * creating every product together.
+   */
+
   visibleCount = 12;
+
   readonly pageSize = 12;
 
-  // Progressive image loading
-  imageAllowed = new Set<string>();
 
-  private imageQueue: string[] = [];
-  private loadingImageId: string | null = null;
+  /*
+   * Progressive image loading.
+   *
+   * Text/data appears first.
+   * Images are released one-by-one.
+   */
 
-  private imageStartTimer?: ReturnType<typeof setTimeout>;
-  private nextImageTimer?: ReturnType<typeof setTimeout>;
+  imageAllowed =
+    new Set<string>();
 
-  // WhatsApp number
-  private phoneNumber = '918247276831';
 
-  constructor(private productService: ProductService) {}
+  private imageQueue:
+    string[] = [];
+
+
+  private loadingImageId:
+    string | null = null;
+
+
+  private imageStartTimer?:
+    ReturnType<typeof setTimeout>;
+
+
+  private nextImageTimer?:
+    ReturnType<typeof setTimeout>;
+
+
+  /*
+   * WhatsApp number
+   */
+
+  private phoneNumber =
+    '918247276831';
+
+
+  constructor(
+    private productService:
+      ProductService
+  ) {}
+
 
   ngOnInit(): void {
+
     this.fetchProducts();
+
   }
+
 
   ngOnDestroy(): void {
-    if (this.imageStartTimer) {
-      clearTimeout(this.imageStartTimer);
-    }
 
-    if (this.nextImageTimer) {
-      clearTimeout(this.nextImageTimer);
-    }
+    this.clearImageTimers();
+
   }
 
-  // Only show first 12 products
-  get displayedProducts(): Product[] {
-    return this.filteredProducts.slice(0, this.visibleCount);
+
+  /*
+   * Products currently visible
+   */
+
+  get displayedProducts():
+    Product[] {
+
+    return this.filteredProducts.slice(
+      0,
+      this.visibleCount
+    );
+
   }
 
-  // Check if more products exist
-  get hasMoreProducts(): boolean {
-    return this.visibleCount < this.filteredProducts.length;
+
+  /*
+   * Show Load More only if needed
+   */
+
+  get hasMoreProducts():
+    boolean {
+
+    return (
+      this.visibleCount <
+      this.filteredProducts.length
+    );
+
   }
+
+
+  /*
+   * FETCH PRODUCTS
+   */
 
   fetchProducts(): void {
 
     this.isLoading = true;
+
     this.errorMsg = '';
 
-    this.productService.getProducts().subscribe({
 
-      next: (data) => {
+    this.productService
+      .getProducts()
+      .subscribe({
 
-        this.products = data;
+        next: (data) => {
 
-        this.categories = Array.from(
-          new Set(this.products.map(p => p.category))
-        );
+          this.products = data;
 
-        this.applyFilters(false);
 
-        // IMPORTANT:
-        // Text/data becomes visible immediately
-        this.isLoading = false;
+          /*
+           * Generate categories
+           */
 
-        // Images start afterwards
-        this.startProgressiveImageLoading();
-      },
+          this.categories =
+            Array.from(
 
-      error: () => {
+              new Set(
 
-        this.errorMsg =
-          'Failed to load products. Please try again.';
+                this.products
 
-        this.isLoading = false;
-      }
+                  .map(
+                    product =>
+                      product.category
+                  )
 
-    });
-  }
+                  .filter(Boolean)
 
-  onSearchChange(): void {
-    this.applyFilters();
-  }
+              )
 
-  selectCategory(category: string): void {
+            );
 
-    this.selectedCategory = category;
 
-    this.applyFilters();
-  }
+          /*
+           * Filter immediately
+           */
 
-  applyFilters(restartImages = true): void {
+          this.applyFilters(false);
 
-    const search =
-      this.searchTerm.trim().toLowerCase();
 
-    this.filteredProducts =
-      this.products.filter(product => {
+          /*
+           * IMPORTANT:
+           *
+           * Hide main loading screen.
+           * Text now appears immediately.
+           */
 
-        const matchesSearch =
-          !search ||
-          product.name
-            .toLowerCase()
-            .includes(search) ||
-          product.description
-            .toLowerCase()
-            .includes(search);
+          this.isLoading = false;
 
-        const matchesCategory =
-          !this.selectedCategory ||
-          product.category ===
-          this.selectedCategory;
 
-        return (
-          matchesSearch &&
-          matchesCategory
-        );
+          /*
+           * Images start after text
+           */
+
+          this.startProgressiveImageLoading();
+
+        },
+
+
+        error: () => {
+
+          this.errorMsg =
+            'Failed to load products. Please try again.';
+
+          this.isLoading = false;
+
+        }
+
       });
 
-    // Reset to first 12 when searching/filtering
-    this.visibleCount = this.pageSize;
+  }
+
+
+  /*
+   * SEARCH
+   */
+
+  onSearchChange(): void {
+
+    this.applyFilters();
+
+  }
+
+
+  /*
+   * CATEGORY FILTER
+   */
+
+  selectCategory(
+    category: string
+  ): void {
+
+    this.selectedCategory =
+      category;
+
+    this.applyFilters();
+
+  }
+
+
+  /*
+   * FILTER PRODUCTS
+   */
+
+  applyFilters(
+    restartImages = true
+  ): void {
+
+    const search =
+      this.searchTerm
+        .trim()
+        .toLowerCase();
+
+
+    this.filteredProducts =
+
+      this.products.filter(
+        product => {
+
+
+          const name =
+            product.name
+              ?.toLowerCase()
+            ?? '';
+
+
+          const description =
+            product.description
+              ?.toLowerCase()
+            ?? '';
+
+
+          const matchesSearch =
+
+            !search ||
+
+            name.includes(search) ||
+
+            description.includes(
+              search
+            );
+
+
+          const matchesCategory =
+
+            !this.selectedCategory ||
+
+            product.category ===
+              this.selectedCategory;
+
+
+          return (
+
+            matchesSearch &&
+
+            matchesCategory
+
+          );
+
+        }
+
+      );
+
+
+    /*
+     * Searching/filtering returns
+     * to first 12 products.
+     */
+
+    this.visibleCount =
+      this.pageSize;
+
 
     if (
       restartImages &&
       !this.isLoading
     ) {
+
       this.startProgressiveImageLoading();
+
     }
+
   }
 
-  // Load next 12 products
+
+  /*
+   * LOAD NEXT 12
+   */
+
   loadMore(): void {
 
-    this.visibleCount += this.pageSize;
+    this.visibleCount +=
+      this.pageSize;
+
 
     this.startProgressiveImageLoading();
+
   }
 
-  // HTML uses this to know if img tag should exist
+
+  /*
+   * Used by HTML:
+   *
+   * Should Angular create the
+   * <img> element yet?
+   */
+
   isImageAllowed(
     productId: string
   ): boolean {
@@ -163,137 +369,247 @@ export class ProductListComponent implements OnInit, OnDestroy {
     return this.imageAllowed.has(
       productId
     );
+
   }
 
+
   /*
-   * IMAGE SYSTEM
-   *
-   * 1. Text appears first
-   * 2. Wait 350ms
-   * 3. Allow ONE image
-   * 4. Wait until it finishes
-   * 5. Allow next image
+   * Build image queue
    */
-  private startProgressiveImageLoading(): void {
 
-    if (this.imageStartTimer) {
-      clearTimeout(
-        this.imageStartTimer
-      );
-    }
+  private
+  startProgressiveImageLoading():
+    void {
 
-    if (this.nextImageTimer) {
-      clearTimeout(
-        this.nextImageTimer
-      );
-    }
+    this.clearImageTimers();
 
-    // Only queue images currently visible
+
+    /*
+     * Reset active pointer.
+     */
+
+    this.loadingImageId =
+      null;
+
+
+    /*
+     * Only images from products
+     * currently visible are queued.
+     */
+
     this.imageQueue =
+
       this.displayedProducts
+
+        .filter(
+          product =>
+            Boolean(
+              product.imageUrl
+            )
+        )
+
         .filter(
           product =>
             !this.imageAllowed.has(
               product.id
             )
         )
+
         .map(
           product =>
             product.id
         );
 
-    this.loadingImageId = null;
 
-    // Give browser time to render text first
+    /*
+     * Give browser 350ms
+     * to render text first.
+     */
+
     this.imageStartTimer =
-      setTimeout(() => {
 
-        this.loadNextImage();
+      setTimeout(
+        () => {
 
-      }, 350);
+          this.loadNextImage();
+
+        },
+        350
+      );
+
   }
 
-  private loadNextImage(): void {
 
-    // Previous image still loading
-    if (this.loadingImageId) {
-      return;
-    }
+  /*
+   * Allow ONE image
+   */
 
-    // Queue finished
+  private loadNextImage():
+    void {
+
     if (
+      this.loadingImageId ||
       this.imageQueue.length === 0
     ) {
+
       return;
+
     }
+
 
     const nextId =
       this.imageQueue.shift();
 
+
     if (!nextId) {
+
       return;
+
     }
 
-    this.loadingImageId = nextId;
 
-    // This causes Angular to create
-    // the img tag for ONLY this product
-    this.imageAllowed.add(nextId);
+    this.loadingImageId =
+      nextId;
+
+
+    /*
+     * This causes Angular
+     * to create the <img>.
+     */
+
+    this.imageAllowed.add(
+      nextId
+    );
+
   }
 
-  // Called after image loads
+
+  /*
+   * Called when image finishes
+   */
+
   onImageFinished(
     productId: string
   ): void {
 
-    // Prevent duplicate events
     if (
       this.loadingImageId !==
       productId
     ) {
+
       return;
+
     }
 
-    this.loadingImageId = null;
 
-    // Small gap before next image
+    this.loadingImageId =
+      null;
+
+
+    /*
+     * Small gap before next image.
+     */
+
     this.nextImageTimer =
-      setTimeout(() => {
 
-        this.loadNextImage();
+      setTimeout(
+        () => {
 
-      }, 100);
+          this.loadNextImage();
+
+        },
+        100
+      );
+
   }
 
-  // Broken image
+
+  /*
+   * Broken image
+   */
+
   onImageError(
     event: Event,
     productId: string
   ): void {
 
-    const img =
-      event.target as HTMLImageElement;
+    const img = event.target as HTMLImageElement;
 
-    // Hide broken image
     img.style.display = 'none';
 
-    // Continue queue
+    /*
+     * Continue queue.
+     */
+
     this.onImageFinished(
       productId
     );
+
   }
 
-  buyNow(product: Product): void {
+
+  /*
+   * Clear timers
+   */
+
+  private clearImageTimers():
+    void {
+
+    if (
+      this.imageStartTimer
+    ) {
+
+      clearTimeout(
+        this.imageStartTimer
+      );
+
+      this.imageStartTimer =
+        undefined;
+
+    }
+
+
+    if (
+      this.nextImageTimer
+    ) {
+
+      clearTimeout(
+        this.nextImageTimer
+      );
+
+      this.nextImageTimer =
+        undefined;
+
+    }
+
+  }
+
+
+  /*
+   * WHATSAPP BUY
+   */
+
+  buyNow(
+    product: Product
+  ): void {
 
     const message =
+
       `Hi, I am interested in buying ${product.name} for $${product.price}`;
 
+
     const url =
-      `https://wa.me/${this.phoneNumber}?text=${encodeURIComponent(message)}`;
+
+      `https://wa.me/${this.phoneNumber}?text=${encodeURIComponent(
+        message
+      )}`;
+
 
     window.open(
       url,
       '_blank'
     );
+
   }
+
 }

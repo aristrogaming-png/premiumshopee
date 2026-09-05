@@ -1,2 +1,29 @@
-/* Global styles can be added here. Tailwind CSS classes are available
-   throughout the application via the CDN included in index.html. */
+/*
+  Global Premium Dukan styles.
+
+  Tailwind is loaded through
+  index.html.
+*/
+
+
+html {
+   color-scheme: light;
+
+   scroll-behavior: smooth;
+}
+
+
+html.dark {
+   color-scheme: dark;
+}
+
+
+body {
+
+   min-height: 100vh;
+
+   margin: 0;
+
+   transition:
+      background-color 0.3s ease,
+      color 0.3s ease;}
