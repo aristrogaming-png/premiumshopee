@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-add-edit-product',
-  templateUrl: './add-edit-product.component.html',
-  styleUrls: ['./add-edit-product.component.css']
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './add-edit-product.component.html'
 })
 export class AddEditProductComponent implements OnInit {
   productForm: FormGroup;

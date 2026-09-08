@@ -30,7 +30,7 @@
         dark:bg-gray-800
       ">
 
-      <img [src]="product!.imageUrl" [alt]="product!.name" class="
+      <img [appProductImage]="product!.imageUrl" [src]="product!.imageUrl | productImage:960" [attr.srcset]="product!.imageUrl | productImageSrcset" sizes="(min-width: 800px) 768px, calc(100vw - 32px)" width="768" height="320" decoding="async" fetchpriority="high" [alt]="product!.name" class="
           h-64
           w-full
           object-cover
@@ -256,7 +256,8 @@
       dark:text-gray-400
     ">
 
-    Loading product details...
+    <span role="status">{{ errorMsg || 'Loading product details...' }}</span>
+    <button *ngIf="errorMsg" type="button" (click)="retry()" class="ml-3 font-semibold underline">Retry</button>
 
   </div>
 

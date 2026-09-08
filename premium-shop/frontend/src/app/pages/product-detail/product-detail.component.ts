@@ -1,29 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, of, startWith, Subject, switchMap, tap } from 'rxjs';
+import { ProductImageDirective } from '../../shared/product-image.directive';
+import { ProductImagePipe, ProductImageSrcsetPipe } from '../../shared/product-image.pipe';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product';
 
 @Component({
   selector: 'app-product-detail',
-  templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.css']
+  standalone: true,
+  imports: [CommonModule, ProductImageDirective, ProductImagePipe, ProductImageSrcsetPipe],
+  templateUrl: './product-detail.component.html'
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
+  errorMsg = '';
+  private readonly retryRequest = new Subject<void>();
   private phoneNumber = '918247276831';
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private destroyRef: DestroyRef
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.productService.getProduct(id).subscribe(prod => {
-        this.product = prod;
-      });
-    }
+    this.route.paramMap.pipe(
+      switchMap(params => this.retryRequest.pipe(
+        startWith(undefined),
+        tap(() => { this.product = null; this.errorMsg = ''; }),
+        switchMap(() => this.productService.getProduct(params.get('id')!).pipe(
+          catchError(() => {
+            this.errorMsg = 'Unable to load this product. Please try again.';
+            return of(null);
+          })
+        ))
+      )),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(product => { this.product = product; });
+  }
+
+  retry(): void {
+    this.retryRequest.next();
   }
 
   buyNow(): void {

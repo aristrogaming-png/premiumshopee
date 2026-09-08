@@ -19,14 +19,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret_change_me';
 /* =====================
    MONGOOSE SETUP
 ===================== */
-mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => {
-    console.error('❌ MongoDB connection error:', err);
-    process.exit(1);
-  });
-
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -36,8 +28,11 @@ const productSchema = new mongoose.Schema(
     description: { type: String, default: '' },
     stock: { type: Number, default: 0 }
   },
-  { timestamps: true }
+  { timestamps: true, bufferCommands: false }
 );
+
+productSchema.index({ updatedAt: -1 });
+productSchema.index({ category: 1, updatedAt: -1 });
 
 // ✅ Make Mongo return `id` instead of `_id` (Angular expects `id`)
 productSchema.set('toJSON', {
@@ -57,6 +52,15 @@ const Product = mongoose.model('Product', productSchema);
 function json(res, status, data) {
   res.writeHead(status, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(data));
+}
+
+function publicProduct(product) {
+  const { _id, __v, ...fields } = product;
+  return { ...fields, id: _id.toString() };
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function handleCors(req, res) {
@@ -165,41 +169,34 @@ const server = http.createServer(async (req, res) => {
 
   /* ========= PRODUCTS ========= */
 
+  if (pathname.startsWith('/api/products') && mongoose.connection.readyState !== 1) {
+    res.setHeader('Retry-After', '5');
+    return json(res, 503, { message: 'Product service is temporarily unavailable. Please retry.' });
+  }
+
   // GET ALL (public)
   if (pathname === '/api/products' && req.method === 'GET') {
     try {
       const filter = {};
 
-      if (query.category) filter.category = query.category;
-      if (query.search) {
+      if (typeof query.category === 'string' && query.category) filter.category = query.category;
+      if (typeof query.search === 'string' && query.search) {
+        const search = new RegExp(escapeRegex(query.search.slice(0, 200)), 'i');
         filter.$or = [
-          { name: new RegExp(query.search, 'i') },
-          { description: new RegExp(query.search, 'i') }
+          { name: search },
+          { description: search }
         ];
       }
 
-      const products = await Product.find(filter);
+      const products = await Product.find(filter).sort({ updatedAt: -1 }).lean().maxTimeMS(5000);
 
-      // Sort products:
-      // 1. In-stock products first
-      // 2. Out-of-stock products last
-      // 3. Within each group, recently updated products first
-      products.sort((a, b) => {
-      
-        const aOutOfStock = a.stock <= 0;
-        const bOutOfStock = b.stock <= 0;
-      
-        // Out-of-stock always goes to the bottom
-        if (aOutOfStock !== bOutOfStock) {
-          return aOutOfStock ? 1 : -1;
-        }
-      
-        // Most recently edited/created product first
-        return new Date(b.updatedAt).getTime() -
-               new Date(a.updatedAt).getTime();
-      });
-      
-      return json(res, 200, products);
+      // Preserve recently updated ordering within the in-stock and sold-out groups.
+      const available = [];
+      const soldOut = [];
+      for (const product of products) {
+        (product.stock <= 0 ? soldOut : available).push(publicProduct(product));
+      }
+      return json(res, 200, available.concat(soldOut));
     } catch (err) {
       return json(res, 500, { message: 'Server error', error: err.message });
     }
@@ -213,10 +210,13 @@ const server = http.createServer(async (req, res) => {
       return json(res, 400, { message: 'Invalid product id' });
     }
 
-    const product = await Product.findById(id);
-    if (!product) return json(res, 404, { message: 'Not found' });
-
-    return json(res, 200, product);
+    try {
+      const product = await Product.findById(id).lean().maxTimeMS(5000);
+      if (!product) return json(res, 404, { message: 'Not found' });
+      return json(res, 200, publicProduct(product));
+    } catch {
+      return json(res, 503, { message: 'Unable to load product. Please retry.' });
+    }
   }
 
   // CREATE (admin only)
@@ -278,10 +278,13 @@ const server = http.createServer(async (req, res) => {
       return json(res, 400, { message: 'Invalid product id' });
     }
 
-    const deleted = await Product.findByIdAndDelete(id);
-    if (!deleted) return json(res, 404, { message: 'Not found' });
-
-    return json(res, 200, { success: true });
+    try {
+      const deleted = await Product.findByIdAndDelete(id);
+      if (!deleted) return json(res, 404, { message: 'Not found' });
+      return json(res, 200, { success: true });
+    } catch {
+      return json(res, 503, { message: 'Unable to delete product. Please retry.' });
+    }
   }
 
   /* ========= FALLBACK ========= */
@@ -291,9 +294,15 @@ const server = http.createServer(async (req, res) => {
 /* =====================
    START
 ===================== */
-console.log('🔐 Admin email is set to:', ADMIN_EMAIL);
-console.log('🚀 Starting server...');
+if (require.main === module) {
+  mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 })
+    .then(() => {
+      server.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+    })
+    .catch(err => {
+      console.error('MongoDB connection error:', err.message);
+      process.exitCode = 1;
+    });
+}
 
-server.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-});
+module.exports = { server, Product };
