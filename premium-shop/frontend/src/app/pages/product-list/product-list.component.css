@@ -182,22 +182,21 @@
 }
 .subscription-card {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
   min-width: 0;
+  overflow: hidden;
   background: var(--surface);
-  padding: 9px;
   border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: 0 2px 7px #00000003;
+  border-radius: 22px;
+  box-shadow: 0 5px 18px #00000008;
   scroll-margin-top: 152px;
 }
 .product-art {
   position: relative;
-  flex: 0 0 31%;
-  min-width: 0;
-  align-self: stretch;
-  min-height: 122px;
-  border-radius: 12px;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  flex: none;
   overflow: hidden;
   background: var(--surface-raised);
 }
@@ -214,11 +213,11 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 4px 0;
+  gap: 10px;
+  padding: 16px;
 }
 .product-info h3 {
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 750;
   line-height: 1.35;
   overflow-wrap: anywhere;
@@ -228,7 +227,7 @@
   overflow: hidden;
 }
 .plan-summary {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   overflow-wrap: anywhere;
 }
@@ -239,7 +238,7 @@
   flex-wrap: wrap;
 }
 .product-price {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 800;
 }
 .stock-badge {
@@ -255,25 +254,32 @@
 }
 .card-actions {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-top: auto;
-  flex-wrap: wrap;
+  padding-top: 4px;
 }
 .details-link {
-  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface-raised);
+  font-size: 14px;
   font-weight: 650;
 }
 .whatsapp-button {
   background: #087b47;
   color: #fff;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 650;
-  border-radius: 9px;
-  padding: 9px 10px;
-  min-height: 34px;
+  border-radius: 11px;
+  padding: 10px 12px;
+  min-height: 44px;
   flex: 1;
-  white-space: nowrap;
 }
 .whatsapp-button:disabled {
   background: var(--surface-raised);
@@ -285,19 +291,18 @@
 }
 .product-skeleton {
   display: flex;
-  gap: 12px;
-  padding: 10px;
-  border-radius: 18px;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 22px;
   background: var(--surface);
-  height: 150px;
 }
 .product-skeleton > span {
-  width: 31%;
-  border-radius: 12px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   background: var(--surface-raised);
 }
 .product-skeleton > div {
-  flex: 1;
+  padding: 16px;
 }
 .product-skeleton i {
   display: block;
@@ -313,20 +318,13 @@
   .category-nav:not(.compact) {
     grid-template-rows: repeat(2, 80px);
   }
-  .product-art {
-    min-height: 140px;
-  }
-  .product-info h3 {
-    font-size: 14px;
-  }
+
 }
 @media (min-width: 1100px) {
   .product-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .product-art {
-    flex-basis: 30%;
-  }
+
 }
 
 .category-nav.few-categories:not(.compact) {

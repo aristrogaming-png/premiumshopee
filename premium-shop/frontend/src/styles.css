@@ -210,13 +210,13 @@ progress {
   transition: transform 180ms ease;
 }
 .theme-track.is-dark .theme-knob { transform: translateX(14px); }
-.theme-toggle { animation: theme-float 3s ease-in-out infinite; }
+.theme-icon { display: inline-block; animation: theme-float 3s ease-in-out infinite; }
 @keyframes theme-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-2px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .theme-toggle { animation: none; }
+  .theme-icon { animation: none; }
   .theme-knob { transition: none; }
 }
 .skip-link {

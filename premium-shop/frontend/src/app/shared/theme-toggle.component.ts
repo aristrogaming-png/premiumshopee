@@ -14,7 +14,7 @@ import { ThemeService } from "../services/theme.service";
     (click)="theme.toggleTheme()"
   >
     <span class="theme-track" [class.is-dark]="theme.isDark" aria-hidden="true">
-      <span class="theme-knob">{{ theme.isDark ? '\u{1F319}' : '\u{2600}\u{FE0F}' }}</span>
+      <span class="theme-knob"><span class="theme-icon">{{ theme.isDark ? '\u{1F319}' : '\u{2600}\u{FE0F}' }}</span></span>
     </span>
     <span>{{ theme.isDark ? "Dark" : "Light" }}</span>
   </button>`,

@@ -153,12 +153,12 @@
       >
         <img
           [appProductImage]="product.imageUrl"
-          [src]="product.imageUrl | productImage: 320"
+          [src]="product.imageUrl | productImage: 640"
           [attr.srcset]="product.imageUrl | productImageSrcset"
-          sizes="(min-width: 1100px) 112px, (min-width: 700px) 170px, 30vw"
+          sizes="(min-width: 1212px) 385px, (min-width: 1100px) 32vw, (min-width: 700px) 48vw, calc(100vw - 32px)"
           [alt]="product.name"
-          width="320"
-          height="320"
+          width="640"
+          height="360"
           [attr.loading]="i < 3 ? 'eager' : 'lazy'"
           [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
           decoding="async"
@@ -188,14 +188,15 @@
         </div>
         <div class="card-actions">
           <a [routerLink]="['/product', product.id]" class="details-link"
-            >Details &rarr;</a
+            >Details</a
           ><button
             type="button"
             class="whatsapp-button"
             (click)="buyNow(product)"
             [disabled]="product.stock <= 0"
+            [attr.aria-label]="'Buy ' + product.name + ' on WhatsApp'"
           >
-            WhatsApp Buy
+            Buy
           </button>
         </div>
       </div>

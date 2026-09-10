@@ -85,3 +85,7 @@ The admin upload error now identifies the three required Cloudinary environment 
 ## Dark/Light switch and uncropped product images
 
 The top-right theme control now uses an accessible switch with Dark/Light labels, sun/moon icons and a subtle two-pixel floating animation. Reduced-motion preferences disable the animation. Both early page initialization and Angular default to Light, while preserving an explicitly saved theme choice. Homepage product art uses centered contain sizing inside its existing frame, preserving the complete image instead of cropping its edges. Letterboxing is expected for different artwork proportions.
+
+## Homepage card layout revision
+
+Homepage cards now place a 16:9 landscape image above product information, with equal Details and Buy actions. Existing artwork is fitted without cropping or stretching; images with other proportions leave space within the landscape frame. Responsive source sizes now match the wider artwork. Mobile uses one card per row, with two/three columns on larger screens. Buy retains the existing WhatsApp destination and stock checks. Loading placeholders match the new card shape. Only the sun/moon icon inside the theme switch floats; the outer control and its label remain stationary, with reduced motion respected.
