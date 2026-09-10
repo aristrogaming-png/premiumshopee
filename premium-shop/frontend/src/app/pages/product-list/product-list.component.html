@@ -33,6 +33,7 @@
     <nav
       #categoryNav
       class="category-nav"
+      [style.--category-columns]="categoryColumns"
       [class.compact]="compact"
       [class.few-categories]="categories.length < 4"
       aria-label="Subscription categories"
@@ -154,11 +155,12 @@
           [appProductImage]="product.imageUrl"
           [src]="product.imageUrl | productImage: 320"
           [attr.srcset]="product.imageUrl | productImageSrcset"
-          sizes="(min-width: 640px) 150px, 32vw"
+          sizes="(min-width: 1100px) 112px, (min-width: 700px) 170px, 30vw"
           [alt]="product.name"
           width="320"
           height="320"
           [attr.loading]="i < 3 ? 'eager' : 'lazy'"
+          [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
           decoding="async"
         />
       </a>

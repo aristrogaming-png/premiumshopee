@@ -111,6 +111,10 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver?.disconnect();
     cancelAnimationFrame(this.frame);
   }
+  get categoryColumns(): number {
+    const count = this.categories.length + 1;
+    return Math.min(6, this.categories.length < 4 ? count : Math.ceil(count / 2));
+  }
   get hasMoreProducts(): boolean {
     return this.visibleCount < this.filteredProducts.length;
   }

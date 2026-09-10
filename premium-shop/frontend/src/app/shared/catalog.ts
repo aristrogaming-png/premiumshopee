@@ -12,11 +12,17 @@ export interface CatalogFilters {
 }
 
 const categoryIcons: Record<string, string> = {
+  ott: "\u{1F37F}",
+  "ott / streaming": "\u{1F37F}",
+  "ott or streaming": "\u{1F37F}",
   streaming: "🍿",
   video: "🍿",
   music: "🎧",
   "ai tools": "🤖",
   ai: "🤖",
+  education: "\u{1F393}",
+  software: "\u{1F4BB}",
+  "design & editing": "\u{1F3A8}",
   design: "🎨",
   productivity: "💻",
   tools: "🧰",
@@ -25,7 +31,7 @@ const categoryIcons: Record<string, string> = {
   security: "🛡️",
 };
 export function categoryIcon(category: string): string {
-  return categoryIcons[category.trim().toLowerCase()] || "✨";
+  return categoryIcons[category.trim().replace(/\s+/g, " ").toLowerCase()] || "\u{1F4E6}";
 }
 
 export function filterCatalog(

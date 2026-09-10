@@ -73,3 +73,11 @@ The running frontend used the hosted API, and the process on local port 3000 ret
 ## Hosted login selection
 
 At the user's request, npm start again selects the hosted backend so login is verified against the hosted credentials. Restart the Angular server after changing startup commands. New banner/upload endpoints remain unavailable on the hosted backend until deployment. No hosted credentials, data or deployment were changed.
+
+## Follow-up: loading, category spacing and uploads
+
+The public product endpoint at premium-shop-backend.onrender.com returned 11 products in 682 ms during this check; banners returned in 1391 ms. Three concurrent optimized Cloudinary image requests completed in 1581?1865 ms, with payloads of 3.3?20.5 kB. These are single checks from the development machine, not mobile Core Web Vitals or cold-start benchmarks. Product and banner requests are independent, and image requests are not serially queued. Native below-fold lazy loading remains deliberate. Render free-service sleeping can still delay an idle server; these frontend changes do not eliminate that hosting behavior.
+
+Category columns now divide the available width while preserving two rows and horizontal overflow for large category lists. The public footer Admin link was removed; direct guarded admin routes remain available. The API preconnect and hosted development configuration now use the same backend as production. The first product image receives high fetch priority, and responsive image sizes match the card widths more closely.
+
+The admin upload error now identifies the three required Cloudinary environment variables and the need to redeploy Render. Local .env settings do not configure the hosted service. No hosted environment variables were changed during this follow-up; live upload configuration remains an external setup step.

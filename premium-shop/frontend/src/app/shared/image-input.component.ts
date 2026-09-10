@@ -227,7 +227,9 @@ export class ImageInputComponent implements OnInit, OnChanges, OnDestroy {
         error: (error) => {
           this.uploading = false;
           this.error =
-            error.error?.message ||
+            error.status === 503 && error.error?.message?.includes("not configured")
+              ? "Uploads are not configured on the hosted backend. In Render, set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET, then redeploy. Your selected image is kept for retry."
+              : error.error?.message ||
             "Upload failed. Retry or cancel the selection; the saved image is unchanged.";
           this.emitBusy();
         },

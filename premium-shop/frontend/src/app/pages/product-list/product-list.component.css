@@ -59,7 +59,7 @@
   display: grid;
   grid-template-rows: repeat(2, 80px);
   grid-auto-flow: column;
-  grid-auto-columns: 86px;
+  grid-auto-columns: minmax(76px, calc((100% - (var(--category-columns, 3) - 1) * 6px) / var(--category-columns, 3)));
   justify-content: start;
   gap: 6px;
   overflow-x: auto;
