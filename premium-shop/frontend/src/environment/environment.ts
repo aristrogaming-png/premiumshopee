@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://premiumshopee.onrender.com/api'
+apiBaseUrl: 'https://premium-shop-backend.onrender.com/api'
 };
