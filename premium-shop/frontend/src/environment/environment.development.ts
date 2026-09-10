@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  // Preserve npm start's existing hosted-API behavior. Use '' for the local proxy.
+  // npm start and npm run start:hosted use the hosted API. start:local uses the local proxy.
   apiBaseUrl: 'https://premiumshopee.onrender.com'
 };

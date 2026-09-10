@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     const apiPath = environment.apiBaseUrl && req.url.startsWith(environment.apiBaseUrl)
       ? req.url.slice(environment.apiBaseUrl.length) : req.url;
-    const isPublicProductRead = req.method === 'GET' && /^\/api\/products(?:\/[^/?]+)?(?:\?.*)?$/.test(apiPath);
+    const isPublicProductRead = req.method === 'GET' && /^\/api\/(?:products(?:\/[^/?]+)?|banners)(?:\?.*)?$/.test(apiPath);
 
     const authReq =
       token && isApiCall && !isLoginCall && !isPublicProductRead

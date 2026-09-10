@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { AuthInterceptor } from './intercepter/auth.interceptor';
+import { ThemeToggleComponent } from './shared/theme-toggle.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +15,7 @@ import { AuthInterceptor } from './intercepter/auth.interceptor';
     BrowserModule,
     HttpClientModule,
     ProductListComponent,
+    ThemeToggleComponent,
     AppRoutingModule
   ],
   providers: [

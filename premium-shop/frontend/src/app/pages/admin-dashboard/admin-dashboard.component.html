@@ -1,53 +1,58 @@
-<button class="bg-red-500 text-white px-3 py-1 rounded" (click)="logout()">
-  Logout
-</button>
-
-
-<div class="flex justify-between items-center mb-4">
-  <h2 class="text-2xl font-bold">Inventory</h2>
-  <button
-    (click)="addProduct()"
-    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-  >
-    Add Product
+<div class="admin-heading">
+  <h1>Inventory</h1>
+  <div class="action-row">
+    <a routerLink="/admin/add" class="btn-primary">Add product</a
+    ><button type="button" class="btn-secondary" (click)="logout()">
+      Log out
+    </button>
+  </div>
+</div>
+<nav class="admin-tabs" aria-label="Admin sections">
+  <a routerLink="/admin" class="active" aria-current="page">Products</a
+  ><a routerLink="/admin/banners">Banners</a>
+</nav>
+<p *ngIf="loading" role="status" class="notice">Loading inventory?</p>
+<div *ngIf="error" role="alert" class="error-message">
+  {{ error }}
+  <button type="button" class="text-link" (click)="loadProducts()">
+    Retry
   </button>
 </div>
-
-<div class="overflow-x-auto">
-  <table class="min-w-full border border-gray-300 bg-white">
+<div class="panel table-scroll">
+  <table class="admin-table">
     <thead>
-      <tr class="bg-gray-100">
-        <th class="px-4 py-2 border-b">Name</th>
-        <th class="px-4 py-2 border-b">Category</th>
-        <th class="px-4 py-2 border-b">Price</th>
-        <th class="px-4 py-2 border-b">Stock</th>
-        <th class="px-4 py-2 border-b">Actions</th>
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Category</th>
+        <th scope="col">Price</th>
+        <th scope="col">Stock</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let product of products"
-        class="hover:bg-gray-50"
-      >
-        <td class="px-4 py-2 border-b">{{ product.name }}</td>
-        <td class="px-4 py-2 border-b">{{ product.category }}</td>
-        <td class="px-4 py-2 border-b">$ {{ product.price }}</td>
-        <td class="px-4 py-2 border-b">{{ product.stock }}</td>
-        <td class="px-4 py-2 border-b space-x-2">
-          <button
-            class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-            (click)="editProduct(product.id)"
-          >
-            Edit
-          </button>
-          <button
-            class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-            (click)="deleteProduct(product.id)"
-          >
-            Delete
-          </button>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.category }}</td>
+        <td>$ {{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>
+          <div class="action-row">
+            <a [routerLink]="['/admin/edit', product.id]" class="btn-secondary"
+              >Edit</a
+            ><button
+              class="btn-danger"
+              type="button"
+              (click)="deleteProduct(product.id)"
+              [disabled]="!!deleting"
+            >
+              {{ deleting === product.id ? "Deleting?" : "Delete" }}
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
   </table>
+  <p *ngIf="!loading && !error && !products.length" class="empty-note">
+    No products yet.
+  </p>
 </div>

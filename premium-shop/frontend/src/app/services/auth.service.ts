@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { timeout } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -12,6 +13,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<any>(this.loginUrl, { email, password }).pipe(
+      timeout(90000),
       map(res => {
         if (res?.success && res?.token) {
           this.token = res.token; // in-memory token

@@ -21,13 +21,13 @@ export class ProductService {
    * Retrieve a list of products from the API.
    * Optional search and category are passed as query params.
    */
-  getProducts(search?: string, category?: string): Observable<Product[]> {
+  getProducts(search?: string, category?: string, fresh = false): Observable<Product[]> {
     let params = new HttpParams();
 
     if (search) params = params.set('search', search);
     if (category) params = params.set('category', category);
 
-    if (search || category) {
+    if (search || category || fresh) {
       return this.http.get<Product[]>(this.apiUrl, { params }).pipe(timeout(this.requestTimeoutMs));
     }
 
@@ -57,17 +57,17 @@ export class ProductService {
 
   /** Create a new product. */
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product).pipe(tap(() => this.invalidateCatalog()));
+    return this.http.post<Product>(this.apiUrl, product).pipe(timeout(this.requestTimeoutMs), tap(() => this.invalidateCatalog()));
   }
 
   /** Update an existing product. */
   updateProduct(product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${product.id}`, product).pipe(tap(() => this.invalidateCatalog()));
+    return this.http.put<Product>(`${this.apiUrl}/${product.id}`, product).pipe(timeout(this.requestTimeoutMs), tap(() => this.invalidateCatalog()));
   }
 
   /** Delete a product by ID. */
   deleteProduct(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`).pipe(tap(() => this.invalidateCatalog()));
+    return this.http.delete(`${this.apiUrl}/${id}`).pipe(timeout(this.requestTimeoutMs), tap(() => this.invalidateCatalog()));
   }
 
   private invalidateCatalog(): void {

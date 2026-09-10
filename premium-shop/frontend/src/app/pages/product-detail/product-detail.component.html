@@ -1,264 +1,117 @@
-<div *ngIf="
-    product;
-    else loading
-  ">
-
-  <div class="
-      mx-auto
-      max-w-3xl
-
-      overflow-hidden
-
-      rounded-2xl
-
-      border
-      border-gray-200
-
-      bg-white
-
-      shadow-md
-
-      dark:border-gray-700
-      dark:bg-gray-900
-    ">
-
-
+<div *ngIf="product; else loading">
+  <div
+    class="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-900"
+  >
     <!-- IMAGE -->
 
-    <div class="
-        bg-gray-100
-        dark:bg-gray-800
-      ">
-
-      <img [appProductImage]="product!.imageUrl" [src]="product!.imageUrl | productImage:960" [attr.srcset]="product!.imageUrl | productImageSrcset" sizes="(min-width: 800px) 768px, calc(100vw - 32px)" width="768" height="320" decoding="async" fetchpriority="high" [alt]="product!.name" class="
-          h-64
-          w-full
-          object-cover
-
-          sm:h-80
-        " />
-
+    <div class="bg-gray-100 dark:bg-gray-800">
+      <img
+        [appProductImage]="product!.imageUrl"
+        [src]="product!.imageUrl | productImage: 960"
+        [attr.srcset]="product!.imageUrl | productImageSrcset"
+        sizes="(min-width: 800px) 768px, calc(100vw - 32px)"
+        width="768"
+        height="320"
+        decoding="async"
+        fetchpriority="high"
+        [alt]="product!.name"
+        class="h-64 w-full object-cover sm:h-80"
+      />
     </div>
-
 
     <!-- DETAILS -->
 
     <div class="p-6">
-
-
       <!-- NAME -->
 
-      <h2 class="
-          mb-2
-
-          text-2xl
-          font-bold
-          text-gray-900
-
-          dark:text-white
-        ">
-
+      <h2 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">
         {{ product!.name }}
-
       </h2>
-
-
+      <p
+        class="muted text-sm mb-4"
+        *ngIf="product.planLabel || product.durationMonths"
+      >
+        {{ product.planLabel
+        }}<span *ngIf="product.durationMonths">
+          ? {{ product.durationMonths }}
+          {{ product.durationMonths === 1 ? "month" : "months" }}</span
+        >
+      </p>
 
       <!-- DESCRIPTION -->
 
-      <div class="
-          mb-4
-
-          rounded-xl
-
-          border
-          border-gray-200
-
-          bg-gray-50
-
-          p-3
-
-          dark:border-gray-700
-          dark:bg-gray-800
-
-          sm:p-4
-        ">
-
-        <p class="
-            overflow-hidden
-
-            whitespace-pre-wrap
-            break-words
-
-            text-sm
-            leading-6
-            text-gray-700
-
-            dark:text-gray-300
-
-            sm:text-base
-          " style="
-            overflow-wrap:anywhere;
-            word-break:break-word;
-          ">
-
+      <div
+        class="mb-4 rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800 sm:p-4"
+      >
+        <p
+          class="overflow-hidden whitespace-pre-wrap break-words text-sm leading-6 text-gray-700 dark:text-gray-300 sm:text-base"
+          style="overflow-wrap: anywhere; word-break: break-word"
+        >
           {{ product!.description }}
-
         </p>
-
       </div>
-
-
 
       <!-- PRICE -->
 
-      <p class="
-          mb-2
-
-          text-xl
-          font-semibold
-          text-gray-900
-
-          dark:text-white
-        ">
-
-        Price:
-        $ {{ product!.price }}
-
+      <p class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
+        Price: $ {{ product!.price }}
       </p>
-
-
 
       <!-- CATEGORY -->
 
-      <p class="
-          mb-2
-
-          text-gray-700
-
-          dark:text-gray-300
-        ">
-
-        <strong>
-          Category:
-        </strong>
+      <p class="mb-2 text-gray-700 dark:text-gray-300">
+        <strong> Category: </strong>
 
         {{ product!.category }}
-
       </p>
-
-
 
       <!-- STOCK -->
 
-      <p class="
-          mb-4
+      <p class="mb-4 text-gray-700 dark:text-gray-300">
+        <strong> Stock: </strong>
 
-          text-gray-700
-
-          dark:text-gray-300
-        ">
-
-        <strong>
-          Stock:
-        </strong>
-
-
-        <span [ngClass]="{
-
-            'text-red-600 dark:text-red-400':
-              product!.stock === 0,
+        <span
+          [ngClass]="{
+            'text-red-600 dark:text-red-400': product!.stock <= 0,
 
             'text-yellow-600 dark:text-yellow-400':
-              product!.stock > 0
-              &&
-              product!.stock < 5,
+              product!.stock > 0 && product!.stock < 5,
 
-            'text-green-600 dark:text-green-400':
-              product!.stock >= 5
-
-          }">
-
+            'text-green-600 dark:text-green-400': product!.stock >= 5,
+          }"
+        >
           {{ product!.stock }}
-
         </span>
-
       </p>
-
-
 
       <!-- BUY -->
 
-      <button type="button" class="
-              rounded-xl
-          
-              bg-emerald-600
-          
-              px-6
-              py-3
-          
-              font-semibold
-              text-white
-          
-              shadow-sm
-              shadow-emerald-600/20
-          
-              transition-all
-              duration-300
-          
-              hover:-translate-y-0.5
-              hover:bg-emerald-700
-              hover:shadow-lg
-              hover:shadow-emerald-600/25
-          
-              disabled:cursor-not-allowed
-              disabled:bg-gray-400
-              disabled:opacity-60
-              disabled:shadow-none
-          
-              dark:bg-emerald-500
-              dark:text-white
-              dark:hover:bg-emerald-400
-            " (click)="buyNow()" [disabled]="product!.stock === 0">
+      <button
+        type="button"
+        class="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white shadow-sm shadow-emerald-600/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-600/25 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-60 disabled:shadow-none dark:bg-emerald-500 dark:text-white dark:hover:bg-emerald-400"
+        (click)="buyNow()"
+        [disabled]="product!.stock <= 0"
+      >
         Buy Now
-        </button>
-
+      </button>
     </div>
-
   </div>
-
 </div>
-
-
 
 <!-- LOADING -->
 
 <ng-template #loading>
-
-  <div class="
-      mx-auto
-      max-w-3xl
-
-      rounded-2xl
-
-      border
-      border-gray-200
-
-      bg-white
-
-      p-8
-
-      text-center
-      text-gray-500
-
-      dark:border-gray-700
-      dark:bg-gray-900
-      dark:text-gray-400
-    ">
-
-    <span role="status">{{ errorMsg || 'Loading product details...' }}</span>
-    <button *ngIf="errorMsg" type="button" (click)="retry()" class="ml-3 font-semibold underline">Retry</button>
-
+  <div
+    class="mx-auto max-w-3xl rounded-2xl border border-gray-200 bg-white p-8 text-center text-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400"
+  >
+    <span role="status">{{ errorMsg || "Loading product details..." }}</span>
+    <button
+      *ngIf="errorMsg"
+      type="button"
+      (click)="retry()"
+      class="ml-3 font-semibold underline"
+    >
+      Retry
+    </button>
   </div>
-
 </ng-template>

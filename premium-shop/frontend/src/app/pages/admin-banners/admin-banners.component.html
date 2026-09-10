@@ -1,0 +1,165 @@
+<div class="admin-heading">
+  <h1>Banners</h1>
+  <button
+    type="button"
+    class="btn-primary"
+    (click)="edit()"
+    [disabled]="saving || !!editing"
+  >
+    Add banner
+  </button>
+</div>
+<nav class="admin-tabs" aria-label="Admin sections">
+  <a routerLink="/admin">Products</a
+  ><a routerLink="/admin/banners" class="active" aria-current="page">Banners</a>
+</nav>
+<p class="muted text-sm">
+  Lower display order appears first. New banners stay inactive until enabled.
+  Removing a record never deletes a hosted image.
+</p>
+<div *ngIf="error" role="alert" class="error-message">
+  {{ error }}
+  <button *ngIf="!editing" type="button" class="text-link" (click)="load()">
+    Retry list
+  </button>
+</div>
+<form *ngIf="editing" (ngSubmit)="save()" #bannerForm="ngForm">
+  <fieldset [disabled]="saving" class="editor-layout">
+    <div class="panel">
+      <h2 class="text-lg font-bold">
+        {{ editing.id ? "Edit banner" : "New banner" }}
+      </h2>
+      <label class="field"
+        >Internal title *<input
+          name="title"
+          [(ngModel)]="editing.title"
+          required
+          maxlength="200"
+      /></label>
+      <label class="field"
+        >Descriptive alt text *<input
+          name="altText"
+          [(ngModel)]="editing.altText"
+          required
+          maxlength="200"
+      /></label>
+      <label class="field"
+        >Destination *<input
+          name="targetUrl"
+          [(ngModel)]="editing.targetUrl"
+          required
+          maxlength="2048"
+          placeholder="/?category=Music or https://…"
+      /></label>
+      <p class="muted text-sm">
+        Use /product/PRODUCT_ID, /?category=EXACT_CATEGORY,
+        /category/EXACT_CATEGORY, or an external HTTPS URL. URL-encode spaces.
+      </p>
+      <label class="field"
+        >Display order<input
+          name="sortOrder"
+          [(ngModel)]="editing.sortOrder"
+          required
+          type="number"
+          min="0"
+          max="100000"
+          step="1"
+      /></label>
+      <label class="action-row"
+        ><input
+          name="isActive"
+          [(ngModel)]="editing.isActive"
+          type="checkbox"
+        />
+        Show on storefront</label
+      >
+    </div>
+    <app-image-input
+      [value]="image"
+      (valueChange)="image = $event"
+      purpose="banner"
+      (busyChange)="mediaBusy = $event"
+      [disabled]="saving"
+    ></app-image-input>
+  </fieldset>
+  <div class="action-row">
+    <button
+      class="btn-primary"
+      type="submit"
+      [disabled]="saving || mediaBusy || bannerForm.invalid"
+    >
+      {{ saving ? "Saving…" : "Save banner" }}</button
+    ><button
+      type="button"
+      class="btn-secondary"
+      (click)="cancel()"
+      [disabled]="saving || mediaBusy"
+    >
+      Cancel</button
+    ><span *ngIf="mediaBusy" class="muted text-sm"
+      >Finish or cancel the image change before saving.</span
+    >
+  </div>
+</form>
+<p *ngIf="loading" role="status" class="notice">Loading banners…</p>
+<div class="panel table-scroll" *ngIf="!editing">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th scope="col">Artwork</th>
+        <th scope="col">Title</th>
+        <th scope="col">Destination</th>
+        <th scope="col">Order</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let banner of banners">
+        <td>
+          <img
+            appProductImage
+            [src]="banner.imageUrl"
+            [alt]="banner.altText"
+            loading="lazy"
+            width="90"
+            height="45"
+          />
+        </td>
+        <td>{{ banner.title }}</td>
+        <td class="destination">{{ banner.targetUrl }}</td>
+        <td>{{ banner.sortOrder }}</td>
+        <td>{{ banner.isActive ? "Active" : "Inactive" }}</td>
+        <td>
+          <div class="action-row">
+            <button
+              type="button"
+              class="btn-secondary"
+              (click)="edit(banner)"
+              [disabled]="saving"
+            >
+              Edit</button
+            ><button
+              type="button"
+              class="btn-secondary"
+              (click)="toggle(banner)"
+              [disabled]="saving"
+            >
+              {{ banner.isActive ? "Deactivate" : "Activate" }}</button
+            ><button
+              type="button"
+              class="btn-danger"
+              (click)="remove(banner)"
+              [disabled]="saving"
+            >
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p *ngIf="!loading && !banners.length" class="empty-note">
+    No banners yet. Add one when artwork is ready.
+  </p>
+</div>

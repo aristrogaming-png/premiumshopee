@@ -1,71 +1,90 @@
-<div class="max-w-lg mx-auto bg-white p-6 rounded shadow">
-  <h2 class="text-2xl font-bold mb-4">
-    {{ isEdit ? 'Edit Product' : 'Add Product' }}
-  </h2>
-  <form [formGroup]="productForm" (ngSubmit)="save()" class="space-y-4">
-    <div>
-      <label class="block mb-1 font-medium" for="name">Name</label>
-      <input
-        id="name"
-        type="text"
-        formControlName="name"
-        class="w-full border border-gray-300 p-2 rounded"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium" for="price">Price</label>
-      <input
-        id="price"
-        type="number"
-        formControlName="price"
-        class="w-full border border-gray-300 p-2 rounded"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium" for="category">Category</label>
-      <input
-        id="category"
-        type="text"
-        formControlName="category"
-        class="w-full border border-gray-300 p-2 rounded"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium" for="imageUrl">Image URL</label>
-      <input
-        id="imageUrl"
-        type="text"
-        formControlName="imageUrl"
-        class="w-full border border-gray-300 p-2 rounded"
-      />
-    </div>
-    <div>
-      <label class="block mb-1 font-medium" for="description"
-        >Description</label
-      >
-      <textarea
-        id="description"
-        rows="3"
-        formControlName="description"
-        class="w-full border border-gray-300 p-2 rounded"
-      ></textarea>
-    </div>
-    <div>
-      <label class="block mb-1 font-medium" for="stock">Stock</label>
-      <input
-        id="stock"
-        type="number"
-        formControlName="stock"
-        class="w-full border border-gray-300 p-2 rounded"
-      />
-    </div>
-    <div class="text-right">
-      <button
-        type="submit"
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        {{ isEdit ? 'Update' : 'Create' }}
-      </button>
-    </div>
-  </form>
+<div class="admin-heading">
+  <h1>{{ isEdit ? "Edit product" : "Add product" }}</h1>
+  <a routerLink="/admin" class="text-link">Back to inventory</a>
 </div>
+<div *ngIf="loading" class="notice" role="status">Loading product?</div>
+<div *ngIf="error" role="alert" class="error-message">
+  {{ error }}
+  <button *ngIf="loadError" type="button" class="text-link" (click)="load()">
+    Retry
+  </button>
+</div>
+<form
+  *ngIf="!loading && !loadError"
+  [formGroup]="productForm"
+  (ngSubmit)="save()"
+>
+  <fieldset [disabled]="saving" class="editor-layout">
+    <div class="panel">
+      <h2 class="text-lg font-bold">Product details</h2>
+      <label class="field"
+        >Name *<input formControlName="name" required maxlength="200"
+      /></label>
+      <div class="form-grid">
+        <label class="field"
+          >Price ($) *<input
+            formControlName="price"
+            type="number"
+            min="0"
+            step="any"
+            required /></label
+        ><label class="field"
+          >Stock *<input
+            formControlName="stock"
+            type="number"
+            min="0"
+            step="1"
+            required
+        /></label>
+      </div>
+      <label class="field"
+        >Category *<input formControlName="category" required maxlength="200"
+      /></label>
+      <label class="field"
+        >Description<textarea
+          formControlName="description"
+          rows="6"
+          maxlength="20000"
+        ></textarea>
+      </label>
+      <label class="field"
+        >Plan summary (optional)<input
+          formControlName="planLabel"
+          maxlength="200"
+          placeholder="Use the actual plan name"
+      /></label>
+      <label class="field"
+        >Duration in months (optional)<input
+          formControlName="durationMonths"
+          type="number"
+          min="1"
+          max="1200"
+          step="1"
+      /></label>
+      <p class="muted text-sm">
+        Leave duration blank if it does not apply. Prices remain in the existing
+        $ currency.
+      </p>
+    </div>
+    <div>
+      <app-image-input
+        [value]="image"
+        (valueChange)="image = $event"
+        (busyChange)="mediaBusy = $event"
+        purpose="product"
+        [disabled]="saving"
+      ></app-image-input>
+    </div>
+  </fieldset>
+  <div class="action-row">
+    <button
+      type="submit"
+      class="btn-primary"
+      [disabled]="saving || mediaBusy || productForm.invalid"
+    >
+      {{ saving ? "Saving?" : "Save product" }}</button
+    ><span *ngIf="mediaBusy" class="muted text-sm"
+      >Finish or cancel the image change before saving.</span
+    >
+  </div>
+</form>

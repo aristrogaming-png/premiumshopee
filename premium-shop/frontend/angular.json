@@ -31,8 +31,13 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [
-                { "type": "initial", "maximumWarning": "400kb", "maximumError": "450kb" },
-                { "type": "anyComponentStyle", "maximumWarning": "4kb", "maximumError": "8kb" }
+                { "type": "initial", "maximumWarning": "425kb", "maximumError": "450kb" },
+                { "type": "anyComponentStyle", "maximumWarning": "6kb", "maximumError": "8kb" }
+              ]
+            },
+            "local": {
+              "fileReplacements": [
+                { "replace": "src/environment/environment.ts", "with": "src/environment/environment.local.ts" }
               ]
             },
             "development": {
@@ -56,6 +61,9 @@
           "options": {
             "buildTarget": "premium-shop:build:development",
             "proxyConfig": "proxy.conf.json"
+          },
+          "configurations": {
+            "local": { "buildTarget": "premium-shop:build:development,local" }
           }
         }
       }

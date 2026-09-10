@@ -5,6 +5,11 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
+  { path: 'category/:category', component: ProductListComponent },
+  {
+    path: 'admin/banners', canActivate: [AuthGuard],
+    loadComponent: () => import('./pages/admin-banners/admin-banners.component').then(m => m.AdminBannersComponent)
+  },
   {
     path: 'product/:id',
     loadComponent: () => import('./pages/product-detail/product-detail.component').then(m => m.ProductDetailComponent)
