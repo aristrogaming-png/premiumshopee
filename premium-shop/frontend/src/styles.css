@@ -137,7 +137,18 @@ progress {
   gap: 10px;
   min-width: 0;
 }
+.header-theme {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-left: auto;
+}
+.page-navigation {
+  padding-top: 4px;
+  padding-bottom: 14px;
+  font-size: 13px;
+}
 .brand-mark {
+  flex-shrink: 0;
   width: 37px;
   height: 39px;
   background: var(--accent);
@@ -458,4 +469,11 @@ progress {
     animation: none !important;
     transition: none !important;
   }
+}
+
+@media (max-width: 380px) {
+  .site-header { gap: 8px; }
+  .brand { gap: 7px; }
+  .brand strong { font-size: 15px; }
+  .header-theme .theme-toggle { padding: 7px; gap: 4px; }
 }

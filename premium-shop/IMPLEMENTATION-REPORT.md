@@ -89,3 +89,7 @@ The top-right theme control now uses an accessible switch with Dark/Light labels
 ## Homepage card layout revision
 
 Homepage cards now place a 16:9 landscape image above product information, with equal Details and Buy actions. Existing artwork is fitted without cropping or stretching; images with other proportions leave space within the landscape frame. Responsive source sizes now match the wider artwork. Mobile uses one card per row, with two/three columns on larger screens. Buy retains the existing WhatsApp destination and stock checks. Loading placeholders match the new card shape. Only the sun/moon icon inside the theme switch floats; the outer control and its label remain stationary, with reduced motion respected.
+
+## Product detail and header revision
+
+The shared header now owns one top-right Dark/Light switch on all pages. The catalog search is full-width, and secondary-page Home navigation sits on a separate row without crowding the brand or switch. Product details use an uncropped 16:9 image, a compact title and plan summary, price/stock and WhatsApp purchase control before the longer description. Desktop details use two columns; mobile stacks these sections. Original descriptions, price and stock are preserved.

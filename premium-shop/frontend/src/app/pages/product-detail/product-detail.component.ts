@@ -22,6 +22,7 @@ import { whatsappUrl } from "../../shared/catalog";
     ProductImageSrcsetPipe,
   ],
   templateUrl: "./product-detail.component.html",
+  styleUrls: ["./product-detail.component.css"],
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;

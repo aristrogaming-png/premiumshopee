@@ -19,7 +19,6 @@ import {
   ProductImagePipe,
   ProductImageSrcsetPipe,
 } from "../../shared/product-image.pipe";
-import { ThemeToggleComponent } from "../../shared/theme-toggle.component";
 import { BannerCarouselComponent } from "../../shared/banner-carousel.component";
 import {
   CatalogSort,
@@ -38,7 +37,6 @@ import {
     ProductImageDirective,
     ProductImagePipe,
     ProductImageSrcsetPipe,
-    ThemeToggleComponent,
     BannerCarouselComponent,
   ],
   templateUrl: "./product-list.component.html",

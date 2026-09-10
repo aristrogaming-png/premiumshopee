@@ -7,11 +7,11 @@
       ><small>Digital subscriptions, made simple.</small></span
     >
   </a>
-  <nav *ngIf="!isCatalog" class="action-row" aria-label="Main navigation">
-    <a routerLink="/" class="text-link">Home</a
-    ><app-theme-toggle></app-theme-toggle>
-  </nav>
+  <app-theme-toggle class="header-theme"></app-theme-toggle>
 </header>
+<nav *ngIf="!isCatalog" class="page-width page-navigation" aria-label="Main navigation">
+  <a routerLink="/" class="text-link">&larr; Home</a>
+</nav>
 <main id="main-content" class="page-width main-content">
   <router-outlet></router-outlet>
 </main>

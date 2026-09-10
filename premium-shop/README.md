@@ -33,7 +33,7 @@ No Cloudinary upload credentials belong in Angular, source control, or logs. If 
 ## Storefront
 
 - Coral accents and shared day/night styling. The first visit defaults to Light; a manual Dark/Light choice is remembered locally. The existing inline theme initializer prevents a light flash.
-- Search stays next to the theme switch. Brand and banners scroll away. IntersectionObserver changes the single category navigation into a fixed compact strip; a measured placeholder preserves its document space. Search remains sticky above it.
+- The theme switch sits at the top right of the brand header; search uses the full width below. Brand and banners scroll away. IntersectionObserver changes the single category navigation into a fixed compact strip; a measured placeholder preserves its document space. Search remains sticky above it.
 - Actual catalog categories retain their values and labels. A small icon map covers recognized names; unknown categories keep their name and a generic sticker. No automatic reclassification.
 - Search, category, price range, optional duration and in-stock-only filters combine. All clears only category; Reset filters clears all controls. Default ordering preserves the API order, price sorts use actual prices, and Newest uses createdAt with deterministic ties.
 - Cards use a landscape image above the existing dollar prices, actual stock and optional plan/duration, with Details and Buy actions. WhatsApp checkout uses the existing number and encoded message. Stock at or below zero disables Buy.
