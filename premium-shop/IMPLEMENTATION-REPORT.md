@@ -81,3 +81,7 @@ The public product endpoint at premium-shop-backend.onrender.com returned 11 pro
 Category columns now divide the available width while preserving two rows and horizontal overflow for large category lists. The public footer Admin link was removed; direct guarded admin routes remain available. The API preconnect and hosted development configuration now use the same backend as production. The first product image receives high fetch priority, and responsive image sizes match the card widths more closely.
 
 The admin upload error now identifies the three required Cloudinary environment variables and the need to redeploy Render. Local .env settings do not configure the hosted service. No hosted environment variables were changed during this follow-up; live upload configuration remains an external setup step.
+
+## Dark/Light switch and uncropped product images
+
+The top-right theme control now uses an accessible switch with Dark/Light labels, sun/moon icons and a subtle two-pixel floating animation. Reduced-motion preferences disable the animation. Both early page initialization and Angular default to Light, while preserving an explicitly saved theme choice. Homepage product art uses centered contain sizing inside its existing frame, preserving the complete image instead of cropping its edges. Letterboxing is expected for different artwork proportions.

@@ -192,6 +192,7 @@
   scroll-margin-top: 152px;
 }
 .product-art {
+  position: relative;
   flex: 0 0 31%;
   min-width: 0;
   align-self: stretch;
@@ -201,9 +202,12 @@
   background: var(--surface-raised);
 }
 .product-art img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 .product-info {
   min-width: 0;

@@ -388,7 +388,7 @@ function globals(t: any, values: Record<string, any>): void {
   });
 }
 
-test("theme follows system initially, remembers manual choice, and tolerates blocked storage", (t) => {
+test("theme defaults to light despite dark system preference, remembers manual choice, and tolerates blocked storage", (t) => {
   let saved: string | null = null;
   let dark = false;
   globals(t, {
@@ -405,14 +405,14 @@ test("theme follows system initially, remembers manual choice, and tolerates blo
   });
   const theme = new ThemeService();
   theme.initTheme();
-  assert.equal(theme.isDark, true);
-  assert.equal(dark, true);
-  theme.toggleTheme();
-  assert.equal(saved, "light");
+  assert.equal(theme.isDark, false);
   assert.equal(dark, false);
+  theme.toggleTheme();
+  assert.equal(saved, "dark");
+  assert.equal(dark, true);
   const reloaded = new ThemeService();
   reloaded.initTheme();
-  assert.equal(reloaded.isDark, false);
+  assert.equal(reloaded.isDark, true);
   t.mock.method(localStorage, "getItem", () => {
     throw Error("blocked");
   });

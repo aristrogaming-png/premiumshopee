@@ -7,14 +7,16 @@ import { ThemeService } from "../services/theme.service";
   template: `<button
     type="button"
     class="theme-toggle"
+    role="switch"
+    aria-label="Dark mode"
+    [attr.aria-checked]="theme.isDark"
+    [attr.title]="theme.isDark ? 'Switch to Light mode' : 'Switch to Dark mode'"
     (click)="theme.toggleTheme()"
-    [attr.aria-label]="
-      theme.isDark ? 'Switch to day mode' : 'Switch to night mode'
-    "
-    [attr.aria-pressed]="theme.isDark"
   >
-    <span aria-hidden="true">{{ theme.isDark ? "☾" : "☀" }}</span
-    ><span>{{ theme.isDark ? "Night" : "Day" }}</span>
+    <span class="theme-track" [class.is-dark]="theme.isDark" aria-hidden="true">
+      <span class="theme-knob">{{ theme.isDark ? '\u{1F319}' : '\u{2600}\u{FE0F}' }}</span>
+    </span>
+    <span>{{ theme.isDark ? "Dark" : "Light" }}</span>
   </button>`,
 })
 export class ThemeToggleComponent {

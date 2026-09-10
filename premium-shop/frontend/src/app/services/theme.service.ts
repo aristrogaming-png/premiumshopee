@@ -8,12 +8,7 @@ export class ThemeService {
     try {
       saved = localStorage.getItem("theme");
     } catch {}
-    this.setTheme(
-      saved === "dark" ||
-        (saved !== "light" &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches),
-      false,
-    );
+    this.setTheme(saved === "dark", false);
   }
   toggleTheme(): void {
     this.setTheme(!this.isDark);

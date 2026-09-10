@@ -187,11 +187,37 @@ progress {
   border-radius: 12px;
   font-size: 11px;
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: none;
 }
-.theme-toggle > span:first-child {
-  color: var(--accent-ink);
-  font-size: 19px;
+.theme-track {
+  width: 38px;
+  height: 24px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+.theme-knob {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  background: var(--surface);
+  border-radius: 50%;
+  font-size: 13px;
+  box-shadow: 0 1px 3px #0002;
+  transition: transform 180ms ease;
+}
+.theme-track.is-dark .theme-knob { transform: translateX(14px); }
+.theme-toggle { animation: theme-float 3s ease-in-out infinite; }
+@keyframes theme-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle { animation: none; }
+  .theme-knob { transition: none; }
 }
 .skip-link {
   position: fixed;
