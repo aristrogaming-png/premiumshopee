@@ -1,8 +1,10 @@
 import {
+  AfterViewInit,
   Component,
   DestroyRef,
   ElementRef,
   OnInit,
+  OnDestroy,
   ViewChild,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -29,11 +31,19 @@ import { validBannerTarget } from "./catalog";
       class="banner-section"
       aria-label="Featured offers"
       aria-roledescription="carousel"
+      (pointerenter)="hovered = $event.pointerType === 'mouse'"
+      (pointerleave)="hovered = false"
     >
       <div
         #track
         class="banner-track"
+        (focusin)="focused = true"
+        (focusout)="focused = false"
         (scroll)="onScroll()"
+        (pointerdown)="interacting = true"
+        (pointerup)="endInteraction()"
+        (pointercancel)="endInteraction()"
+        (pointerleave)="endInteraction()"
         (keydown.arrowright)="step(1, $event)"
         (keydown.arrowleft)="step(-1, $event)"
       >
@@ -54,7 +64,7 @@ import { validBannerTarget } from "./catalog";
             [appProductImage]="banner.imageUrl"
             [src]="banner.imageUrl | productImage: 960"
             [attr.srcset]="banner.imageUrl | productImageSrcset"
-            sizes="(min-width: 900px) 880px, 90vw"
+            sizes="(min-width: 1212px) 1180px, calc(100vw - 32px)"
             [alt]="banner.altText"
             [attr.loading]="i === 0 ? 'eager' : 'lazy'"
             [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
@@ -67,7 +77,7 @@ import { validBannerTarget } from "./catalog";
       <div *ngIf="banners.length > 1" class="carousel-controls">
         <button
           type="button"
-          class="icon-button"
+          class="icon-button carousel-previous"
           aria-label="Previous banner"
           (click)="step(-1)"
           [disabled]="active === 0"
@@ -75,22 +85,21 @@ import { validBannerTarget } from "./catalog";
           ‹
         </button>
         <button
-          *ngFor="let banner of banners; let i = index"
-          class="carousel-dot"
           type="button"
-          [class.selected]="i === active"
-          [attr.aria-label]="'Show banner ' + (i + 1)"
-          [attr.aria-current]="i === active ? 'true' : null"
-          (click)="go(i)"
-        ></button>
-        <button
-          type="button"
-          class="icon-button"
+          class="icon-button carousel-next"
           aria-label="Next banner"
           (click)="step(1)"
           [disabled]="active === banners.length - 1"
         >
           ›
+        </button>
+        <button
+          type="button"
+          class="carousel-pause"
+          [attr.aria-label]="paused ? 'Play banner slideshow' : 'Pause banner slideshow'"
+          (click)="paused = !paused"
+        >
+          <span aria-hidden="true">{{ paused ? '▶' : 'Ⅱ' }}</span>
         </button>
       </div>
     </section>
@@ -112,6 +121,9 @@ import { validBannerTarget } from "./catalog";
         display: block;
         min-width: 0;
       }
+      .banner-section {
+        position: relative;
+      }
       .banner-track {
         display: flex;
         gap: 12px;
@@ -124,70 +136,106 @@ import { validBannerTarget } from "./catalog";
         display: none;
       }
       .banner-slide {
-        flex: 0 0 90%;
+        flex: 0 0 100%;
         min-width: 0;
         scroll-snap-align: start;
+        scroll-snap-stop: always;
         border-radius: 20px;
         overflow: hidden;
         background: var(--surface-raised);
         aspect-ratio: 2/1;
       }
-      .banner-slide:only-child {
-        flex-basis: 100%;
-      }
       .banner-slide img {
+        display: block;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
       .carousel-controls {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        padding: 8px;
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
       }
-      .carousel-dot {
-        width: 28px;
-        height: 28px;
-        display: grid;
-        place-items: center;
+      .carousel-controls button {
+        position: absolute;
+        pointer-events: auto;
+        background: var(--surface);
+        color: var(--text);
+        box-shadow: 0 2px 8px #0002;
       }
-      .carousel-dot:after {
-        content: "";
-        width: 7px;
-        height: 7px;
+      .carousel-controls .icon-button {
+        top: 50%;
+        transform: translateY(-50%);
         border-radius: 50%;
-        background: var(--border);
       }
-      .carousel-dot.selected:after {
-        background: var(--accent);
+      .carousel-previous {
+        left: 8px;
+      }
+      .carousel-next {
+        right: 8px;
+      }
+      .carousel-controls button:disabled {
+        visibility: hidden;
+      }
+      .carousel-pause {
+        right: 8px;
+        bottom: 8px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 12px;
       }
       .banner-error {
         padding: 12px;
         color: var(--muted);
       }
-      @media (min-width: 900px) {
-        .banner-slide {
-          flex-basis: 75%;
-        }
-      }
     `,
   ],
 })
-export class BannerCarouselComponent implements OnInit {
+export class BannerCarouselComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("track") track?: ElementRef<HTMLElement>;
   banners: Banner[] = [];
   active = 0;
   error = false;
   loading = false;
+  paused = false;
+  hovered = false;
+  focused = false;
+  interacting = false;
+  private direction = 1;
+  private autoplay?: ReturnType<typeof setInterval>;
   constructor(
     private service: BannerService,
     private router: Router,
     private destroyRef: DestroyRef,
   ) {}
   ngOnInit(): void {
+    this.paused = typeof matchMedia !== "undefined" &&
+      matchMedia("(prefers-reduced-motion: reduce)").matches;
     this.load();
+  }
+  ngAfterViewInit(): void {
+    this.startAutoplay();
+  }
+  ngOnDestroy(): void {
+    clearInterval(this.autoplay);
+  }
+  private startAutoplay(): void {
+    clearInterval(this.autoplay);
+    this.autoplay = setInterval(() => {
+      if (this.paused || this.hovered || this.focused || this.interacting ||
+          document.hidden || this.banners.length < 2) return;
+      const bounds = this.track?.nativeElement.getBoundingClientRect();
+      if (!bounds || bounds.bottom <= 0 || bounds.top >= window.innerHeight) return;
+      if (this.active === this.banners.length - 1) this.direction = -1;
+      else if (this.active === 0) this.direction = 1;
+      this.go(this.active + this.direction);
+    }, 2000);
+  }
+  endInteraction(): void {
+    if (!this.interacting) return;
+    this.interacting = false;
+    this.startAutoplay();
   }
   load(): void {
     if (this.loading) return;
@@ -203,6 +251,7 @@ export class BannerCarouselComponent implements OnInit {
           );
           this.loading = false;
           this.active = 0;
+          this.direction = 1;
         },
         error: () => {
           this.error = true;
@@ -226,17 +275,24 @@ export class BannerCarouselComponent implements OnInit {
     this.go(
       Math.max(0, Math.min(this.banners.length - 1, this.active + change)),
     );
+    this.startAutoplay();
   }
   onScroll(): void {
     const track = this.track?.nativeElement;
-    if (track?.children.length)
-      this.active = Math.min(
-        this.banners.length - 1,
-        Math.round(
-          track.scrollLeft /
-            ((track.children[0] as HTMLElement).offsetWidth + 12),
-        ),
-      );
+    if (!track?.children.length) return;
+    const origin = (track.children[0] as HTMLElement).offsetLeft;
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    let nearest = 0;
+    let distance = Infinity;
+    Array.from(track.children).forEach((child, index) => {
+      const target = Math.min((child as HTMLElement).offsetLeft - origin, maxScroll);
+      const delta = Math.abs(track.scrollLeft - target);
+      if (delta < distance) {
+        nearest = index;
+        distance = delta;
+      }
+    });
+    this.active = nearest;
   }
   navigate(event: MouseEvent, banner: Banner): void {
     if (

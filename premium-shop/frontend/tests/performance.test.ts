@@ -45,7 +45,7 @@ const product = {
   imageUrl: "",
 };
 
-test("catalog renders a page immediately and preserves Load More and filtering", () => {
+test("catalog renders a page immediately and preserves incremental loading and filtering", () => {
   const products = Array.from({ length: 25 }, (_, index) => ({
     ...product,
     id: String(index),
@@ -585,7 +585,7 @@ test('sticky category transition reserves its original space and preserves selec
   component.ngOnDestroy(); assert.equal(disconnected,2);
 });
 
-test('carousel handles empty/single/multiple records and keyboard movement without autorotation', t => {
+test('carousel handles empty/single/multiple records and keyboard movement with reduced motion', t => {
   globals(t, {matchMedia:() => ({matches:true})});
   const banners = new Subject<any[]>();
   const component = new BannerCarouselComponent({getBanners:() => banners} as any, {} as any, {onDestroy:() => () => {}} as any);
@@ -593,11 +593,116 @@ test('carousel handles empty/single/multiple records and keyboard movement witho
   const banner = {id:'a',imageUrl:'https://example.com/image.png',altText:'Offer',targetUrl:'/'};
   banners.next([banner]); assert.equal(component.banners.length,1);
   banners.next([banner,{...banner,id:'b'}]); assert.equal(component.banners.length,2);
-  const track = {children:[{offsetLeft:0,offsetWidth:108},{offsetLeft:120,offsetWidth:108}],scrollLeft:0,scrollTo(options:any){this.scrollLeft=options.left;}};
+  const track = {children:[{offsetLeft:0,offsetWidth:108},{offsetLeft:120,offsetWidth:108}],scrollWidth:228,clientWidth:108,scrollLeft:0,scrollTo(options:any){this.scrollLeft=options.left;}};
   component.track = {nativeElement:track} as any;
   let prevented=false;
   component.step(1,{preventDefault:() => prevented=true} as any); component.onScroll();
   assert.equal(prevented,true); assert.equal(component.active,1); assert.equal(track.scrollLeft,120);
   component.step(-1); component.onScroll(); assert.equal(component.active,0);
   banners.complete();
+  component.ngOnDestroy();
+});
+
+test('carousel advances every two seconds, reverses at the edge, pauses during interaction and cleans up', t => {
+  let tick: () => void = () => {};
+  let cleared = 0;
+  globals(t, {
+    matchMedia: () => ({ matches: false }),
+    document: { hidden: false },
+    window: { innerHeight: 800 },
+    setInterval: (callback: () => void, delay: number) => {
+      assert.equal(delay, 2000);
+      tick = callback;
+      return 1;
+    },
+    clearInterval: () => { cleared++; },
+  });
+  const banner = { id: 'a', imageUrl: '', altText: 'Offer', targetUrl: '/' };
+  const component = new BannerCarouselComponent(
+    { getBanners: () => of([banner, { ...banner, id: 'b' }, { ...banner, id: 'c' }]) } as any,
+    {} as any, { onDestroy: () => () => {} } as any,
+  );
+  const track = {
+    children: [{ offsetLeft: 0 }, { offsetLeft: 120 }, { offsetLeft: 240 }],
+    scrollWidth: 348, clientWidth: 140, scrollLeft: 0,
+    getBoundingClientRect: () => ({ top: 100, bottom: 300 }),
+    scrollTo(options: any) {
+      this.scrollLeft = Math.min(options.left, this.scrollWidth - this.clientWidth);
+      component.onScroll();
+    },
+  };
+  component.track = { nativeElement: track } as any;
+  component.ngOnInit();
+  component.ngAfterViewInit();
+  tick(); assert.equal(component.active, 1);
+  tick(); assert.equal(component.active, 2);
+  tick(); assert.equal(component.active, 1);
+  tick(); assert.equal(component.active, 0);
+  for (const state of ['paused', 'hovered', 'focused', 'interacting'] as const) {
+    component[state] = true;
+    tick(); assert.equal(component.active, 0);
+    component[state] = false;
+  }
+  document.hidden = true;
+  tick(); assert.equal(component.active, 0);
+  document.hidden = false;
+  component.ngOnDestroy();
+  assert.equal(cleared, 2);
+});
+
+test('scroll sentinel loads batches, handles a still-visible sentinel, resets filters and disconnects', t => {
+  let intersect: (entries: any[]) => void = () => {};
+  let frame: (() => void) | undefined;
+  let disconnected = 0;
+  let top = 5000;
+  globals(t, {
+    window: { innerHeight: 800 },
+    IntersectionObserver: class {
+      constructor(callback: any) { intersect = callback; }
+      observe() {}
+      disconnect() { disconnected++; }
+    },
+    requestAnimationFrame: (callback: () => void) => { frame = callback; return 1; },
+    cancelAnimationFrame: () => { frame = undefined; },
+  });
+  const component = new ProductListComponent(
+    { getProducts: () => of(Array.from({ length: 37 }, (_, i) => ({ ...product, id: String(i) }))) } as any,
+    { onDestroy: () => () => {} } as any,
+    { paramMap: of(convertToParamMap({})), queryParamMap: of(convertToParamMap({})) } as any,
+  );
+  component.ngOnInit();
+  const sentinel = { getBoundingClientRect: () => ({ top, bottom: top + 40 }) };
+  component.loadMoreSentinel = { nativeElement: sentinel } as any;
+  const flush = () => { const callback = frame; frame = undefined; callback?.(); };
+  flush();
+  assert.equal(component.displayedProducts.length, 12);
+  intersect([{ target: sentinel, isIntersecting: false }]);
+  assert.equal(component.displayedProducts.length, 12);
+  top = 1000;
+  intersect([{ target: sentinel, isIntersecting: true }]);
+  assert.equal(component.displayedProducts.length, 24);
+  flush(); assert.equal(component.displayedProducts.length, 36);
+  flush(); assert.equal(component.displayedProducts.length, 37);
+  assert.equal(component.hasMoreProducts, false);
+  component.searchTerm = 'missing';
+  component.applyFilters();
+  flush(); assert.equal(component.displayedProducts.length, 0);
+  top = 5000;
+  component.resetFilters();
+  flush(); assert.equal(component.displayedProducts.length, 12);
+  component.ngOnDestroy();
+  assert.equal(disconnected, 1);
+  assert.equal(frame, undefined);
+});
+
+test('image loading state resets independently and failed fallbacks stop loading', () => {
+  const image = new ProductImageDirective();
+  assert.equal(image.isLoading, true);
+  image.onLoad();
+  assert.equal(image.isLoading, false);
+  image.appProductImage = 'https://example.com/next.png';
+  image.ngOnChanges();
+  assert.equal(image.isLoading, true);
+  image.onError({ getAttribute: () => PRODUCT_PLACEHOLDER } as any);
+  assert.equal(image.isLoading, false);
 });

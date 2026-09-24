@@ -46,6 +46,21 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild("categoryMarker") marker?: ElementRef<HTMLElement>;
   @ViewChild("categorySpace") categorySpace?: ElementRef<HTMLElement>;
   @ViewChild("categoryNav") categoryNav?: ElementRef<HTMLElement>;
+  @ViewChild("loadMoreSentinel")
+  set loadMoreSentinel(element: ElementRef<HTMLElement> | undefined) {
+    this.loadObserver?.disconnect();
+    this.sentinel = element?.nativeElement;
+    if (!this.sentinel) return;
+    this.loadObserver = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.target === this.sentinel && entry.isIntersecting))
+          this.loadMore();
+      },
+      { rootMargin: "0px 0px 400px 0px" },
+    );
+    this.loadObserver.observe(this.sentinel);
+    this.checkForMoreProducts();
+  }
   products: Product[] = [];
   filteredProducts: Product[] = [];
   displayedProducts: Product[] = [];
@@ -68,6 +83,9 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
   private resizeObserver?: ResizeObserver;
   private frame = 0;
+  private loadObserver?: IntersectionObserver;
+  private sentinel?: HTMLElement;
+  private loadFrame = 0;
   constructor(
     private productService: ProductService,
     private destroyRef: DestroyRef,
@@ -107,7 +125,9 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.observer?.disconnect();
     this.resizeObserver?.disconnect();
+    this.loadObserver?.disconnect();
     cancelAnimationFrame(this.frame);
+    cancelAnimationFrame(this.loadFrame);
   }
   get categoryColumns(): number {
     const count = this.categories.length + 1;
@@ -187,11 +207,23 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateDisplayedProducts();
   }
   loadMore(): void {
-    this.visibleCount += this.pageSize;
+    if (this.isLoading || this.errorMsg || !this.hasMoreProducts) return;
+    this.visibleCount = Math.min(this.visibleCount + this.pageSize, this.filteredProducts.length);
     this.updateDisplayedProducts();
   }
   private updateDisplayedProducts(): void {
     this.displayedProducts = this.filteredProducts.slice(0, this.visibleCount);
+    this.checkForMoreProducts();
+  }
+  private checkForMoreProducts(): void {
+    if (!this.sentinel || this.loadFrame) return;
+    // Recheck after rendering: the next batch may still fit inside a tall viewport.
+    this.loadFrame = requestAnimationFrame(() => {
+      this.loadFrame = 0;
+      const bounds = this.sentinel?.getBoundingClientRect();
+      if (bounds && bounds.top <= window.innerHeight + 400 && bounds.bottom >= 0)
+        this.loadMore();
+    });
   }
   private revealCategory(): void {
     if (!this.categoryNav) return;

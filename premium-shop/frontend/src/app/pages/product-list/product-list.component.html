@@ -140,8 +140,7 @@
     <article
       *ngFor="
         let product of displayedProducts;
-        trackBy: trackProduct;
-        let i = index
+        trackBy: trackProduct
       "
       class="subscription-card"
     >
@@ -151,6 +150,7 @@
         [attr.aria-label]="'View ' + product.name"
       >
         <img
+          #art="productImage"
           [appProductImage]="product.imageUrl"
           [src]="product.imageUrl | productImage: 640"
           [attr.srcset]="product.imageUrl | productImageSrcset"
@@ -158,10 +158,12 @@
           [alt]="product.name"
           width="640"
           height="360"
-          [attr.loading]="i < 3 ? 'eager' : 'lazy'"
-          [attr.fetchpriority]="i === 0 ? 'high' : 'auto'"
+          loading="lazy"
           decoding="async"
         />
+        <span *ngIf="art.isLoading" class="image-placeholder" aria-hidden="true">
+          Loading image…
+        </span>
       </a>
       <div class="product-info">
         <h3>
@@ -211,9 +213,12 @@
       Reset filters
     </button>
   </div>
-  <div *ngIf="!isLoading && !errorMsg && hasMoreProducts" class="load-more">
-    <button type="button" class="btn-secondary" (click)="loadMore()">
-      Load more subscriptions
-    </button>
+  <div
+    *ngIf="!isLoading && !errorMsg && hasMoreProducts"
+    #loadMoreSentinel
+    class="load-more-sentinel"
+    role="status"
+  >
+    Loading more subscriptions…
   </div>
 </div>

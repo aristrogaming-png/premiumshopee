@@ -208,6 +208,17 @@
   object-fit: contain;
   object-position: center;
 }
+.product-art img.image-loading {
+  opacity: 0;
+}
+.image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 12px;
+}
 .product-info {
   min-width: 0;
   flex: 1;
@@ -285,9 +296,11 @@
   background: var(--surface-raised);
   color: var(--muted);
 }
-.load-more {
+.load-more-sentinel {
   text-align: center;
-  margin: 24px;
+  padding: 24px;
+  color: var(--muted);
+  font-size: 13px;
 }
 .product-skeleton {
   display: flex;
