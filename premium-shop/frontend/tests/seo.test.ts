@@ -79,7 +79,7 @@ test('category pages show their own heading, copy, canonical and product links',
   assert.equal(page.status, 200);
   assert.match(page.body, /Software and productivity subscriptions/);
   assert.match(page.body, new RegExp('href="/product/' + product.id + '"'));
-  assert.match(page.body, /rel="canonical" href="https:\/\/premiumdukan.com\/category\/Software"/);
+  assert.match(page.body, /rel="canonical" href="https:\/\/www\.premiumdukan.com\/category\/Software"/);
 });
 test('catalogue HTML links to all products beyond the client initial batch', () => {
   const products = Array.from({length:25}, (_, i) => ({...product, id: i.toString(16).padStart(24,'0')}));
@@ -126,8 +126,8 @@ test('unsupported policy and renewal are not fabricated; sold-out offer matches 
 test('sitemap contains only canonical public URLs and includes all real categories and products', () => {
   const xml = sitemap(snapshot);
   assert.match(xml,/http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9/);
-  assert.ok(xml.includes('https://premiumdukan.com/product/' + product.id));
-  assert.ok(xml.includes('https://premiumdukan.com/category/Software'));
+  assert.ok(xml.includes('https://www.premiumdukan.com/product/' + product.id));
+  assert.ok(xml.includes('https://www.premiumdukan.com/category/Software'));
   assert.ok(!/\/admin|\/login|\/checkout|hreflang|\/in\//.test(xml));
 });
 test('all help pages have real headings, visible content and no invented ratings', () => {
@@ -182,7 +182,7 @@ test('global buying guide replaces country targeting and preserves old links wit
   const moved = render('/buying-from-india-usa-uk');
   assert.equal(moved.status, 308);
   assert.equal(moved.headers.Location, '/buying-guide');
-  assert.ok(sitemap(snapshot).includes('https://premiumdukan.com/buying-guide'));
+  assert.ok(sitemap(snapshot).includes('https://www.premiumdukan.com/buying-guide'));
   assert.ok(!sitemap(snapshot).includes('buying-from-india-usa-uk'));
   for (const path of ['/', '/product/' + product.id, ...Object.keys(informationPages).map(path => '/' + path)]) {
     const page = render(path);

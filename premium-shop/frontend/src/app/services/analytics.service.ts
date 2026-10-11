@@ -2,6 +2,7 @@ import { Injectable, Optional } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Product } from '../models/product';
 import { bootstrapData } from '../shared/bootstrap-data';
+import { SITE } from '../shared/seo-content';
 
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {
@@ -38,7 +39,7 @@ export class AnalyticsService {
     target.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
     target.gtag('js', new Date());
     // No automatic page URL/referrer collection: query strings may contain personal/search data.
-    target.gtag('config', id, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, page_location: 'https://premiumdukan.com' + window.location.pathname, page_referrer: this.referrer() });
+    target.gtag('config', id, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, page_location: SITE + window.location.pathname, page_referrer: this.referrer() });
     const script = document.createElement('script');
     script.async = true; script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`; document.head.appendChild(script);
   }
@@ -52,7 +53,7 @@ export class AnalyticsService {
   event(name: 'page_view' | 'view_item' | 'begin_checkout' | 'whatsapp_click', product?: Product): void {
     if (!this.allowed) return;
     const target = window as any;
-    const details: Record<string, unknown> = { page_location: 'https://premiumdukan.com' + window.location.pathname, page_referrer: this.referrer() };
+    const details: Record<string, unknown> = { page_location: SITE + window.location.pathname, page_referrer: this.referrer() };
     if (name === 'begin_checkout') details['checkout_type'] = 'whatsapp_enquiry';
     if (product) Object.assign(details, { currency: 'USD', value: product.price, items: [{ item_id: product.id, item_name: product.name, item_category: product.category, price: product.price, quantity: 1 }] });
     target.gtag?.('event', name, details);

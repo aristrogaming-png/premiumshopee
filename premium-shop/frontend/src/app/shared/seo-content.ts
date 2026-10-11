@@ -1,6 +1,6 @@
 import { Product } from '../models/product';
 
-export const SITE = 'https://premiumdukan.com';
+export const SITE = 'https://www.premiumdukan.com';
 export const STORE_NAME = 'Premium Dukan';
 export const CONTACT = 'https://wa.me/918247276831';
 export const ELIGIBILITY_NOTE = 'Check the account requirements and provider restrictions for your chosen plan before payment. Activation requirements vary by product.';

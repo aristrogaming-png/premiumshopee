@@ -1,5 +1,9 @@
 # Implementation report
 
+## Production domain redirect correction
+
+Live HTTP tracing found an apex-to-www 307 at Vercel followed by a www-to-apex 308 from the storefront function, causing ERR_TOO_MANY_REDIRECTS. Removed application-level hostname redirects so Vercel owns that behavior. Canonicals, structured data, sitemap, robots and analytics now share the deployed www origin. Added a bundled-handler regression check for the observed domain rule, home/product/help pages, robots, sitemap, query strings, path normalization and missing-page status.
+
 ## Lazy-loading review - 11 October 2026
 
 The catalogue uses native image lazy loading and displays 12 cards initially, adding batches when the scroll sentinel approaches the viewport. Product detail artwork is intentionally eager; related artwork and later banners are lazy. Image files are fetched from their URLs rather than embedded in the JavaScript bundle.

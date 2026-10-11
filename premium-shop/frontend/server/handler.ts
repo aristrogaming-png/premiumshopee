@@ -48,7 +48,8 @@ export async function handler(req: any, res: any): Promise<void> {
     res.end(req.method === 'HEAD' ? '' : body);
   };
   if (!['GET', 'HEAD'].includes(req.method || 'GET')) return finish(405, { Allow: 'GET, HEAD', 'Cache-Control': 'no-store' });
-  if (/^www\.premiumdukan\.com(?::\d+)?$/i.test(req.headers.host || '')) return finish(308, { Location: SITE + path + (incoming.search ? incoming.search : ''), 'Cache-Control': 'public, max-age=3600' });
+  // Vercel owns domain redirects (apex -> www). Redirecting hosts here can
+  // conflict with its domain settings and send visitors into a redirect loop.
   if (/\\|\x00/.test(path) || path.startsWith('//')) return finish(400, { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' });
   if (path.length > 1 && path.endsWith('/')) return finish(308, { Location: path.replace(/\/+$/, '') + incoming.search, 'Cache-Control': 'public, max-age=3600' });
   if (path === '/index.html') return finish(308, { Location: '/', 'Cache-Control': 'public, max-age=3600' });
