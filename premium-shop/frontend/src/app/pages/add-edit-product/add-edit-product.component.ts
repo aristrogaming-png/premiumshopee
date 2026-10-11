@@ -47,6 +47,16 @@ export class AddEditProductComponent implements OnInit {
       price: [0, [Validators.required, Validators.min(0)]],
       category: ["", Validators.required],
       description: [""],
+      seoDescription: ["", Validators.maxLength(500)],
+      features: [""],
+      activation: [""],
+      accountType: [""],
+      deliveryTime: [""],
+      eligibility: [""],
+      supportedCountries: [""],
+      renewalTerms: [""],
+      refundTerms: [""],
+      warrantyTerms: [""],
       stock: [
         0,
         [
@@ -76,11 +86,12 @@ export class AddEditProductComponent implements OnInit {
     this.error = "";
     this.loadError = false;
     this.productService
-      .getProduct(this.productId!)
+      .getProduct(this.productId!, true)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (product) => {
           this.productForm.patchValue(product);
+          this.productForm.patchValue({ features: (product.features || []).join('\n'), supportedCountries: (product.supportedCountries || []).join(', ') });
           this.image = {
             imageUrl: product.imageUrl || "",
             imagePublicId: product.imagePublicId || "",
@@ -111,6 +122,8 @@ export class AddEditProductComponent implements OnInit {
       ...values,
       ...this.image,
       id: this.productId || "",
+      features: String(values.features || '').split('\n').map(value => value.trim()).filter(Boolean),
+      supportedCountries: String(values.supportedCountries || '').split(',').map(value => value.trim().toUpperCase()).filter(Boolean),
       durationMonths:
         values.durationMonths === "" ? null : values.durationMonths,
     };

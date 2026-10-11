@@ -6,7 +6,9 @@
     "ng": "ng",
     "start": "ng serve",
     "start:local": "ng serve --configuration local",
-    "build": "ng build",
+    "build": "ng build && node scripts/build-storefront.mjs",
+    "build:root": "ng build && node scripts/build-storefront.mjs --root-output",
+    "preview:seo": "node scripts/preview-storefront.mjs",
     "test": "node scripts/test.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "start:hosted": "ng serve"

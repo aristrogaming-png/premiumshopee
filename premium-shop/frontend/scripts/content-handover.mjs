@@ -1,0 +1,11 @@
+import { readFile, writeFile } from 'node:fs/promises';
+const products = JSON.parse(await readFile('../seo/evidence/catalog.json','utf8'));
+const quote = value => '"'+String(value).replaceAll('"','""')+'"';
+const rows = [['Page','Primary keyword idea','Supporting intent','Evidence / validation status']];
+rows.push(['/','digital subscriptions and software offers','compare plans, duration and activation','Catalogue-based idea; search demand and competition not measured']);
+for(const category of [...new Set(products.map(p=>p.category))]) rows.push(['/category/'+encodeURIComponent(category),category==='Ai'?'AI tools subscriptions':category==='Software'?'software and productivity subscriptions':category==='Education'?'learning subscriptions':'design and video editing subscriptions','compare actual listed plans and activation','Catalogue-based idea; keyword volume unverified']);
+for(const product of products) rows.push(['/product/'+product.id,product.name.replace(/[^\p{L}\p{N}\s&+().,:/'–—-]/gu,'').trim(), 'price, activation, account requirements, duration', 'Product name verified against public catalogue; keyword demand unverified; global catalogue; product-specific eligibility must be verified']);
+rows.push(['/buying-guide','digital subscription buying guide','plan comparison, activation, payments and delivery','Informational checklist published; demand unverified; no offer-level country availability claims']);
+await writeFile('../seo/keyword-page-map.csv',rows.map(row=>row.map(quote).join(',')).join('\n')+'\n');
+const details = products.map(product=>({id:product.id,name:product.name,path:'/product/'+product.id,category:product.category,catalogueUSD:product.price,missing: ['Confirmed activation eligibility','Final payment currencies and methods','Renewal terms','Complete refund terms','Support hours', ...(!product.durationMonths?['Structured duration missing; see product-specific listing notes']:[])],descriptionDollarAmounts:[...product.description.matchAll(/\$\s*([\d,.]+)/g)].map(match=>match[1]),note:'Description prices are not checkout evidence and may conflict with the authoritative numeric catalogue price. Full vendor allowances and authorization need seller verification.'}));
+await writeFile('../seo/product-verification-gaps.json',JSON.stringify(details,null,2));

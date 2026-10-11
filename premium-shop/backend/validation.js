@@ -117,8 +117,25 @@ function productInput(body, partial = false) {
   for (const [field, max] of [
     ["description", 20000],
     ["planLabel", 200],
+    ["seoDescription", 500],
+    ["activation", 2000],
+    ["accountType", 1000],
+    ["deliveryTime", 1000],
+    ["eligibility", 2000],
+    ["renewalTerms", 2000],
+    ["refundTerms", 2000],
+    ["warrantyTerms", 2000],
   ]) {
     if (field in body) output[field] = text(body[field], field, max);
+  }
+  for (const field of ["features", "supportedCountries"]) {
+    if (field in body) {
+      if (!Array.isArray(body[field]) || body[field].length > 30)
+        throw new RequestError(`${field} must be a list of up to 30 items.`);
+      output[field] = [...new Set(body[field].map(value => text(value, field, field === 'features' ? 300 : 2, true)))];
+      if (field === 'supportedCountries' && output[field].some(value => !['IN', 'US', 'GB'].includes(value)))
+        throw new RequestError('Supported countries must use IN, US or GB. Add only verified countries.');
+    }
   }
   if ("durationMonths" in body)
     output.durationMonths =

@@ -1,12 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ThemeService } from "./services/theme.service";
+import { SeoService } from './services/seo.service';
 @Component({ selector: "app-root", templateUrl: "./app.component.html" })
 export class AppComponent implements OnInit {
   currentYear = new Date().getFullYear();
   constructor(
     public themeService: ThemeService,
     private router: Router,
+    private seo: SeoService,
   ) {}
   get isCatalog(): boolean {
     return (

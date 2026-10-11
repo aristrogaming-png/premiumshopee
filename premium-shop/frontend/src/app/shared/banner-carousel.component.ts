@@ -61,6 +61,7 @@ import { validBannerTarget } from "./catalog";
           "
         >
           <img
+            loading="lazy"
             [appProductImage]="banner.imageUrl"
             [src]="banner.imageUrl | productImage: 960"
             [attr.srcset]="banner.imageUrl | productImageSrcset"

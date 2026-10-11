@@ -1,37 +1,78 @@
+<nav *ngIf="product" class="breadcrumbs detail-breadcrumbs" aria-label="Breadcrumb">
+  <a routerLink="/">Home</a><span aria-hidden="true">/</span>
+  <a [routerLink]="categoryPath(product.category)">{{ categoryTitle(product.category) }}</a><span aria-hidden="true">/</span>
+  <span aria-current="page">{{ product.name }}</span>
+</nav>
 <article *ngIf="product as item; else loading" class="product-detail">
-  <div class="detail-art">
-    <img [appProductImage]="item.imageUrl"
-      [src]="item.imageUrl | productImage: 960"
-      [attr.srcset]="item.imageUrl | productImageSrcset"
-      sizes="(min-width: 960px) 520px, (min-width: 792px) 760px, calc(100vw - 32px)"
-      width="960" height="540" decoding="async" fetchpriority="high" [alt]="item.name" />
-  </div>
-  <section class="detail-summary" aria-label="Product information">
-    <p class="detail-category">{{ item.category }}</p>
-    <h1>{{ item.name }}</h1>
-    <p class="detail-plan" *ngIf="item.planLabel || item.durationMonths">
-      <span *ngIf="item.planLabel">{{ item.planLabel }}</span>
-      <span *ngIf="item.planLabel && item.durationMonths" aria-hidden="true"> &middot; </span>
-      <span *ngIf="item.durationMonths">{{ item.durationMonths }} {{ item.durationMonths === 1 ? 'month' : 'months' }}</span>
-    </p>
-    <div class="detail-purchase">
-      <strong class="detail-price">$ {{ item.price | number: '1.0-2' }}</strong>
-      <span class="detail-stock" [class.sold-out]="item.stock <= 0">
-        {{ item.stock <= 0 ? 'Out of stock' : item.stock + ' in stock' }}
-      </span>
+  <div class="detail-hero">
+    <div class="detail-visual">
+      <div class="detail-art">
+        <img loading="eager" [appProductImage]="item.imageUrl" [src]="item.imageUrl | productImage: 960"
+          [attr.srcset]="item.imageUrl | productImageSrcset"
+          [attr.sizes]="detailImageSizes"
+          width="960" height="540" decoding="async" fetchpriority="high" [alt]="item.name" />
+      </div>
+      <div class="detail-art-caption"><span>Digital product</span><span>Delivered online <span aria-hidden="true">&#8599;</span></span></div>
     </div>
-    <button type="button" class="detail-buy" (click)="buyNow()" [disabled]="item.stock <= 0">
-      {{ item.stock <= 0 ? 'Out of stock' : 'Buy on WhatsApp' }}
-    </button>
+    <section class="detail-summary" aria-label="Product information">
+      <div class="detail-labels">
+        <a class="detail-category" [routerLink]="categoryPath(item.category)">{{ categoryTitle(item.category) }}</a>
+        <span class="detail-stock" [class.sold-out]="item.stock <= 0">{{ item.stock <= 0 ? 'Out of stock' : item.stock + ' in stock' }}</span>
+      </div>
+      <h1>{{ item.name }}</h1>
+      <p *ngIf="productInfo(item).summary" class="detail-intro">{{ productInfo(item).summary }}</p>
+      <div class="detail-plan" *ngIf="item.planLabel || item.durationMonths">
+        <span *ngIf="item.planLabel">{{ item.planLabel }}</span>
+        <span *ngIf="item.durationMonths">{{ item.durationMonths }} {{ item.durationMonths === 1 ? 'month' : 'months' }}</span>
+      </div>
+      <div class="detail-purchase">
+        <span class="detail-price-label">Price</span>
+        <strong class="detail-price"><small>USD</small> ${{ item.price | number: '1.0-2' }}</strong>
+        <button type="button" class="detail-buy" (click)="buyNow()" [disabled]="item.stock <= 0">
+          {{ item.stock <= 0 ? 'Currently out of stock' : 'Buy on WhatsApp' }}<span *ngIf="item.stock > 0" aria-hidden="true">&#8599;</span>
+        </button>
+        <p class="detail-payment-note">{{ paymentNote }}</p>
+      </div>
+      <div class="detail-assistance"><span>Have a question before ordering?</span><a routerLink="/contact">Talk to us <span aria-hidden="true">&#8594;</span></a></div>
+    </section>
+  </div>
+
+  <section class="detail-overview" aria-labelledby="description-title">
+    <div class="detail-section-heading"><span class="detail-eyebrow">Know your plan</span><h2 id="description-title">Product details</h2><p>The features, access and activation information for this offer.</p></div>
+    <div *ngIf="item.description?.trim()" class="detail-description-copy">{{ item.description }}</div>
+    <ul *ngIf="productInfo(item).features.length" class="detail-features">
+      <li *ngFor="let feature of productInfo(item).features"><span aria-hidden="true">&#10003;</span>{{ feature }}</li>
+    </ul>
+    <div *ngIf="productFactGroups(item).length" class="detail-fact-grid">
+      <section *ngFor="let group of productFactGroups(item)" class="detail-fact-card">
+        <h3>{{ group.title }}</h3>
+        <dl><div *ngFor="let fact of group.items"><dt>{{ fact.label }}</dt><dd>{{ fact.value }}</dd></div></dl>
+      </section>
+    </div>
+    <nav class="detail-guide-links" aria-label="Buying information"><a routerLink="/activation-delivery">Activation &amp; delivery <span aria-hidden="true">&#8599;</span></a><a routerLink="/buying-guide">Buying guide <span aria-hidden="true">&#8599;</span></a><a routerLink="/refunds">Refund information <span aria-hidden="true">&#8599;</span></a></nav>
   </section>
-  <section *ngIf="item.description" class="detail-description" aria-labelledby="description-title">
-    <h2 id="description-title">Product details</h2>
-    <p>{{ item.description }}</p>
+
+  <section class="detail-faq-section" aria-labelledby="faq-title">
+    <div class="detail-section-heading"><span class="detail-eyebrow">A little more clarity</span><h2 id="faq-title">Frequently asked questions</h2><p>Useful details before you choose your plan.</p></div>
+    <div class="detail-faq-list"><details *ngFor="let faq of productFaqs(item)" class="product-faq"><summary>{{ faq.question }}</summary><p>{{ faq.answer }}</p></details></div>
+  </section>
+
+  <section *ngIf="related.length" class="detail-related" aria-labelledby="related-title">
+    <div class="detail-section-heading"><span class="detail-eyebrow">Keep exploring</span><h2 id="related-title">Related subscriptions</h2></div>
+    <div class="detail-related-grid">
+      <a *ngFor="let other of related" class="detail-related-card" [routerLink]="['/product', other.id]">
+        <img [appProductImage]="other.imageUrl" [src]="other.imageUrl | productImage: 640"
+          [attr.srcset]="other.imageUrl | productImageSrcset" [attr.sizes]="relatedImageSizes"
+          width="480" height="270" loading="lazy" decoding="async" [alt]="other.name" />
+        <div><span class="detail-related-category">{{ other.category }}</span><h3>{{ other.name }}</h3><p><strong>USD ${{ other.price | number: '1.0-2' }}</strong><span>{{ other.stock > 0 ? 'View plan' : 'Out of stock' }} <span aria-hidden="true">&#8594;</span></span></p></div>
+      </a>
+    </div>
   </section>
 </article>
 <ng-template #loading>
   <div class="state-panel" aria-live="polite">
     <p>{{ errorMsg || 'Loading product details...' }}</p>
-    <button *ngIf="errorMsg" type="button" (click)="retry()" class="btn-secondary">Retry</button>
+    <button *ngIf="errorMsg && !notFound" type="button" (click)="retry()" class="btn-secondary">Retry</button>
+    <a *ngIf="notFound" routerLink="/">Browse subscriptions</a>
   </div>
 </ng-template>

@@ -73,6 +73,14 @@ Compiled local Tailwind, lazy admin/detail routes, responsive Cloudinary deliver
 
 - Frontend: npm test; npm run typecheck; npm run build.
 - Backend: npm test. External upload/database behavior is mocked; generated tiny images test content validation.
-- Production output: frontend/dist/premium-shop. Do not check generated output or dependencies into Git. Configure SPA fallback, compression and long-lived caching for hashed JS/CSS when deployment is separately approved.
+- Production SEO output: `frontend/.vercel/output` from `npm run build`, including static assets and the storefront rendering function. Repository-root deployments use `npm run build:root` from frontend to produce `.vercel/output` at the repository root. Serving only `frontend/dist/premium-shop` skips the server-rendered SEO pages. Do not check generated output or dependencies into Git.
+
+## Global storefront and SEO preview
+
+The storefront has no country selector. `/buying-guide` replaces the old country-specific guide, whose URL permanently redirects to the new page. Public product pages include readable HTML, canonical links, product/offer and breadcrumb structured data, and related-product links. `/sitemap.xml` and `/robots.txt` are served by the storefront function.
+
+From frontend, run `npm run build` and then `npm run preview:seo` to preview that function at `http://127.0.0.1:4200`. This preview reads the hosted public catalogue by default; set `CATALOG_API_ORIGIN` to use another backend. Ordinary `npm start` runs the Angular development server without the SEO function.
+
+Optional `GOOGLE_SITE_VERIFICATION` and `GA_MEASUREMENT_ID` values must be supplied to the frontend build environment. The build does not load backend/.env. The analytics measurement ID is public configuration; analytics still requires the visitor's consent. After deployment, verify ownership in Google Search Console, submit `https://premiumdukan.com/sitemap.xml`, and inspect a product URL to check the deployed HTML. Local build checks do not establish Google indexing or rankings.
 
 Implementation details and verification limitations are in IMPLEMENTATION-REPORT.md. Reference documentation: https://cloudinary.com/documentation/node_image_and_video_upload, https://github.com/mscdex/busboy, https://sharp.pixelplumbing.com/api-constructor/.

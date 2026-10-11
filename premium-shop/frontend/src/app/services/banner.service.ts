@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, shareReplay, tap, timeout } from "rxjs";
+import { Observable, of, shareReplay, tap, timeout } from "rxjs";
+import { freshBootstrap } from '../shared/bootstrap-data';
 import { Banner } from "../models/banner";
 import { environment } from "../../environment/environment";
 
@@ -9,7 +10,12 @@ export class BannerService {
   private cached?: Observable<Banner[]>;
   private expires = 0;
   private readonly base = `${environment.apiBaseUrl}/api`;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const data = freshBootstrap();
+    // Only the homepage renderer fetches banners. Other routes carry an empty
+    // placeholder, which must not suppress the first real homepage request.
+    if (data?.path === '/') { this.cached = of(data.banners); this.expires = Date.now() + 30000; }
+  }
 
   getBanners(): Observable<Banner[]> {
     if (!this.cached || Date.now() >= this.expires) {

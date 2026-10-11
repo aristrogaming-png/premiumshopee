@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm --prefix premium-shop/frontend ci",
+  "buildCommand": "npm --prefix premium-shop/frontend run build:root"
+}

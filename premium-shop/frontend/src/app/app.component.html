@@ -16,6 +16,13 @@
   <router-outlet></router-outlet>
 </main>
 <footer class="site-footer page-width">
+  <nav class="help-links" aria-label="Store information">
+    <a routerLink="/about">About</a><a routerLink="/contact">Contact</a>
+    <a routerLink="/activation-delivery">Activation and delivery</a><a routerLink="/refunds">Refunds and warranty</a>
+    <a routerLink="/terms">Buying terms</a><a routerLink="/privacy">Privacy</a>
+    <a routerLink="/buying-guide">Buying guide</a>
+  </nav>
+  <app-store-preferences></app-store-preferences>
   <span>&copy; {{ currentYear }} Premium Dukan</span>
   <a
     href="https://chat.whatsapp.com/BaozIURHTPS8eZNKjrtROf"

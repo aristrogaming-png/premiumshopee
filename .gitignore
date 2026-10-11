@@ -4,6 +4,7 @@
 **/.angular/
 **/.cache/
 **/out-tsc/
+**/.vercel/
 
 # Local credentials
 .env

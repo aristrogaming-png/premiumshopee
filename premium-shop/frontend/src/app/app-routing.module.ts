@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { AuthGuard } from './guards/auth.guard';
+import { informationPaths } from './shared/seo-content';
 
 const routes: Routes = [
   { path: '', component: ProductListComponent },
   { path: 'category/:category', component: ProductListComponent },
+  { path: 'buying-from-india-usa-uk', redirectTo: 'buying-guide', pathMatch: 'full' },
+  ...informationPaths.map(page => ({ path: page, data: { page }, loadComponent: () => import('./pages/information/information.component').then(m => m.InformationComponent) })),
   {
     path: 'admin/banners', canActivate: [AuthGuard],
     loadComponent: () => import('./pages/admin-banners/admin-banners.component').then(m => m.AdminBannersComponent)
@@ -30,7 +33,7 @@ const routes: Routes = [
     path: 'admin', canActivate: [AuthGuard],
     loadComponent: () => import('./pages/admin-dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent)
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];
 
 @NgModule({

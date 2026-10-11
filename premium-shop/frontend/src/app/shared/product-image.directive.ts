@@ -1,6 +1,7 @@
 import { Directive, HostBinding, HostListener, Input, OnChanges } from '@angular/core';
 
-export const PRODUCT_PLACEHOLDER = '/assets/placeholder.svg';
+import { PRODUCT_PLACEHOLDER } from './product-image-source';
+export { PRODUCT_PLACEHOLDER } from './product-image-source';
 
 @Directive({ selector: 'img[appProductImage]', standalone: true, exportAs: 'productImage' })
 export class ProductImageDirective implements OnChanges {

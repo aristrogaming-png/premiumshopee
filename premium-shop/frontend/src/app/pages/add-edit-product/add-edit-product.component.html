@@ -65,6 +65,18 @@
         Leave duration blank if it does not apply. Prices remain in the existing
         $ currency.
       </p>
+      <h2 class="text-lg font-bold">Verified buying details</h2>
+      <p class="muted text-sm">Your full description appears under Product details. These optional fields add extra information; blank fields are hidden.</p>
+      <label class="field">Plain-English product summary<textarea formControlName="seoDescription" maxlength="500"></textarea></label>
+      <label class="field">Included features (one per line)<textarea formControlName="features"></textarea></label>
+      <label class="field">Activation steps<textarea formControlName="activation" maxlength="2000"></textarea></label>
+      <label class="field">Account type<input formControlName="accountType" maxlength="1000" /></label>
+      <label class="field">Delivery window<input formControlName="deliveryTime" maxlength="1000" /></label>
+      <label class="field">Eligibility and restrictions<textarea formControlName="eligibility" maxlength="2000"></textarea></label>
+      <label class="field">Verified activation regions (optional country codes)<input formControlName="supportedCountries" placeholder="Leave blank until verified" /></label>
+      <label class="field">Renewal terms<textarea formControlName="renewalTerms" maxlength="2000"></textarea></label>
+      <label class="field">Refund terms<textarea formControlName="refundTerms" maxlength="2000"></textarea></label>
+      <label class="field">Warranty terms<textarea formControlName="warrantyTerms" maxlength="2000"></textarea></label>
     </div>
     <div>
       <app-image-input

@@ -1,0 +1,295 @@
+{
+  "measuredAt": "2026-09-24T20:09:49.186Z",
+  "origin": "http://127.0.0.1:4200",
+  "kind": "HTTP-only local lab probes using the live Render catalogue. Local timings are not comparable to public CDN TTFB or real-user Core Web Vitals.",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "public, max-age=0, s-maxage=60",
+      "noindex": null,
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 961,
+          "totalMs": 966
+        },
+        {
+          "ttfbMs": 11,
+          "totalMs": 13
+        },
+        {
+          "ttfbMs": 7,
+          "totalMs": 9
+        }
+      ],
+      "bytes": 58068,
+      "h1Count": 1,
+      "links": 98,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/category/Software",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "public, max-age=0, s-maxage=60",
+      "noindex": null,
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 6,
+          "totalMs": 7
+        },
+        {
+          "ttfbMs": 5,
+          "totalMs": 7
+        },
+        {
+          "ttfbMs": 5,
+          "totalMs": 6
+        }
+      ],
+      "bytes": 37755,
+      "h1Count": 1,
+      "links": 47,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/category/Software\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/product/6952c2137a2648fa67f26295",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "public, max-age=0, s-maxage=60",
+      "noindex": null,
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 5,
+          "totalMs": 6
+        },
+        {
+          "ttfbMs": 5,
+          "totalMs": 6
+        },
+        {
+          "ttfbMs": 6,
+          "totalMs": 8
+        }
+      ],
+      "bytes": 31233,
+      "h1Count": 1,
+      "links": 21,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/product/6952c2137a2648fa67f26295\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "cacheControl": "public, max-age=0, s-maxage=3600",
+      "noindex": null,
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 5,
+          "totalMs": 6
+        }
+      ],
+      "bytes": 85,
+      "h1Count": 0,
+      "links": 0,
+      "canonical": null,
+      "jsonLdValid": false
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "contentType": "application/xml; charset=utf-8",
+      "cacheControl": "public, max-age=0, s-maxage=60",
+      "noindex": null,
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 4,
+          "totalMs": 4
+        }
+      ],
+      "bytes": 2402,
+      "h1Count": 0,
+      "links": 0,
+      "canonical": null,
+      "jsonLdValid": false
+    },
+    {
+      "path": "/does-not-exist",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-store",
+      "noindex": "noindex, follow",
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 3,
+          "totalMs": 4
+        }
+      ],
+      "bytes": 3231,
+      "h1Count": 1,
+      "links": 11,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/does-not-exist\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/product/000000000000000000000000",
+      "status": 404,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-store",
+      "noindex": "noindex, follow",
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 3,
+          "totalMs": 4
+        }
+      ],
+      "bytes": 3267,
+      "h1Count": 1,
+      "links": 11,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/product/000000000000000000000000\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-store",
+      "noindex": "noindex, follow",
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 2,
+          "totalMs": 3
+        }
+      ],
+      "bytes": 3115,
+      "h1Count": 1,
+      "links": 10,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/login\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/admin",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-store",
+      "noindex": "noindex, follow",
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 2,
+          "totalMs": 3
+        }
+      ],
+      "bytes": 3115,
+      "h1Count": 1,
+      "links": 10,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/admin\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/?search=test",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "cacheControl": "private, no-store",
+      "noindex": "noindex, follow",
+      "location": null,
+      "runs": [
+        {
+          "ttfbMs": 3,
+          "totalMs": 4
+        }
+      ],
+      "bytes": 29883,
+      "h1Count": 1,
+      "links": 27,
+      "canonical": "<link rel=\"canonical\" href=\"https://premiumdukan.com/\">",
+      "jsonLdValid": true
+    },
+    {
+      "path": "/?category=Software",
+      "status": 308,
+      "cacheControl": "public, max-age=0, s-maxage=60",
+      "noindex": null,
+      "location": "/category/Software",
+      "runs": [
+        {
+          "ttfbMs": 2,
+          "totalMs": 3
+        }
+      ],
+      "bytes": 0,
+      "h1Count": 0,
+      "links": 0,
+      "canonical": null,
+      "jsonLdValid": false
+    },
+    {
+      "path": "/category/software",
+      "status": 308,
+      "cacheControl": "public, max-age=0, s-maxage=60",
+      "noindex": null,
+      "location": "/category/Software",
+      "runs": [
+        {
+          "ttfbMs": 2,
+          "totalMs": 3
+        }
+      ],
+      "bytes": 0,
+      "h1Count": 0,
+      "links": 0,
+      "canonical": null,
+      "jsonLdValid": false
+    },
+    {
+      "path": "/index.html",
+      "status": 308,
+      "cacheControl": "public, max-age=3600",
+      "noindex": null,
+      "location": "/",
+      "runs": [
+        {
+          "ttfbMs": 3,
+          "totalMs": 3
+        }
+      ],
+      "bytes": 0,
+      "h1Count": 0,
+      "links": 0,
+      "canonical": null,
+      "jsonLdValid": false
+    },
+    {
+      "path": "/category/Software/",
+      "status": 308,
+      "cacheControl": "public, max-age=3600",
+      "noindex": null,
+      "location": "/category/Software",
+      "runs": [
+        {
+          "ttfbMs": 3,
+          "totalMs": 3
+        }
+      ],
+      "bytes": 0,
+      "h1Count": 0,
+      "links": 0,
+      "canonical": null,
+      "jsonLdValid": false
+    }
+  ],
+  "sitemapUrls": 32,
+  "brokenSitemapLinks": []
+}

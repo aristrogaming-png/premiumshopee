@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, shareReplay, tap, timeout } from 'rxjs';
+import { Observable, of, shareReplay, tap, timeout } from 'rxjs';
+import { discardBootstrap, freshBootstrap } from '../shared/bootstrap-data';
 import { Product } from '../models/product';
 import { environment } from 'src/environment/environment';
 
@@ -15,7 +16,10 @@ export class ProductService {
   // Allow a sleeping host to wake up, but never leave the UI waiting forever.
   private readonly requestTimeoutMs = 90_000;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    const data = freshBootstrap();
+    if (data) { this.catalog = of(data.products); this.catalogExpiresAt = Date.now() + this.cacheDurationMs; }
+  }
 
   /**
    * Retrieve a list of products from the API.
@@ -51,7 +55,9 @@ export class ProductService {
   }
 
   /** Fetch a single product by its ID. */
-  getProduct(id: string): Observable<Product> {
+  getProduct(id: string, fresh = false): Observable<Product> {
+    const initial = !fresh && freshBootstrap()?.products.find(product => product.id === id);
+    if (initial) return of(initial);
     return this.http.get<Product>(`${this.apiUrl}/${id}`).pipe(timeout(this.requestTimeoutMs));
   }
 
@@ -71,6 +77,7 @@ export class ProductService {
   }
 
   private invalidateCatalog(): void {
+    discardBootstrap();
     this.catalog = undefined;
     this.catalogExpiresAt = 0;
   }

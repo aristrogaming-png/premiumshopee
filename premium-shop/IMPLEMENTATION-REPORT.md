@@ -1,5 +1,43 @@
 # Implementation report
 
+## Lazy-loading review - 11 October 2026
+
+The catalogue uses native image lazy loading and displays 12 cards initially, adding batches when the scroll sentinel approaches the viewport. Product detail artwork is intentionally eager; related artwork and later banners are lazy. Image files are fetched from their URLs rather than embedded in the JavaScript bundle.
+
+Added static lazy attributes to catalogue and carousel images so newly created image elements have a lazy default before Angular binds their sources; the first image still switches to eager. Matched the initial server banner source and responsive candidates to the client, and corrected category rendering so a non-displayed banner cannot suppress the first product's eager priority.
+
+Browser-native lazy loading can request multiple nearby images together. This review verifies source and rendered HTML behavior, not a browser network trace; the configured browser runtime was unavailable in the preceding checks. Regression coverage checks a 25-product catalogue with and without a banner, category priority, and lazy related images.
+
+Validation before push: 42 frontend tests, 17 backend tests, TypeScript checks, repository-root production build and staged whitespace checks passed. Local environment files and generated build output are excluded from Git.
+
+## Restore saved product descriptions
+
+Fixed a regression in the redesigned product page: it displayed structured fields and editorial fallbacks but omitted the saved description. Both Angular and initial server HTML now display the complete saved description above optional detail cards, preserving newlines, blank lines and emojis as escaped text. Removed hardcoded product-ID summaries and generic missing-field rows; only populated fields produce fact rows and product-specific FAQ answers. The short introduction and SEO summary use current saved content.
+
+The LinkedIn product shown in the user's screenshot was checked through the public API and retains its 484-character description. No database record was changed. Regression tests cover full descriptions with separate short SEO summaries, old and new IDs, multiline text, HTML escaping, and omitted empty detail groups.
+
+## Product image follow-up - 10 October 2026
+
+Unified responsive image generation between the server renderer and Angular. Signed, already-transformed and external image URLs now retain their original source without misleading width candidates in server HTML. Product artwork and related cards use shared layout-specific image sizes; related cards also select responsive sources after Angular starts.
+
+Validation: 39 frontend tests, TypeScript checks, production build and whitespace checks passed. Regression coverage verifies untouched image URLs, server/client responsive source agreement, hero priority and lazy related artwork. The browser runtime still reports no available browser, so interactive visual verification remains pending. README now documents the server-rendered output and local SEO preview. No deployment or environment changes were performed.
+
+## Global storefront and product details - 2 October 2026
+
+Removed the public country and currency selectors, country preference storage and selected-country analytics. Replaced country-targeted help content with a global buying guide at /buying-guide; the previous guide URL redirects permanently in the server response and redirects in Angular. Footer links, FAQs, metadata, sitemap and the generated keyword handover now use the global guide. Product-specific account requirements remain separate from storefront audience targeting.
+
+Redesigned product details with a responsive image and purchase section, larger price, clear stock state, feature panels, grouped activation and order facts, expandable FAQs, and related product cards. Shared fact data keeps Angular and initial server HTML consistent. Existing canonical URLs, Product/Offer and breadcrumb structured data, real catalogue prices and stock are retained. No worldwide activation guarantee or fabricated reviews were added.
+
+Validation: 37 frontend tests, TypeScript typechecking, production build and whitespace checks passed. The built server passed checks for the global guide, permanent redirect, sitemap and all 20 fixture product pages. Interactive visual verification could not run because no browser was available through the configured browser runtime. Changes are local; Google indexing and ranking require the renderer to be deployed and crawled.
+
+## SEO continuation verification - 25 September 2026
+
+Reviewed the pending server-rendered storefront and analytics changes. Fixed banner initialization when a visitor opens a product or category URL directly and then navigates home: those initial pages do not fetch banners, so their empty banner placeholder must not populate the client banner cache. Homepage bootstrap data still avoids a duplicate request. A regression test covers both entry routes and homepage reuse.
+
+Verification: 35 frontend tests and 17 backend tests passed; TypeScript typechecking passed. Ten built-handler smoke checks passed using the saved catalogue fixture with mocked network responses, covering home, product, sitemap, robots, missing/private routes, rewrite routing, redirects, HEAD and unsupported methods. These checks do not establish browser rendering, live analytics delivery or deployed routing correctness. No environment values or hosted services were changed during this continuation.
+
+The pending SEO build produces a Vercel function and static assets in frontend/.vercel/output (`npm run build`), or repository-root .vercel/output (`npm run build:root`). `npm run preview:seo` previews the frontend output locally. Serving only dist/premium-shop bypasses the new server renderer. Optional build-time public configuration is GA_MEASUREMENT_ID and GOOGLE_SITE_VERIFICATION; CATALOG_API_ORIGIN configures the renderer's runtime catalogue backend. The purchase reporting adapter remains unconnected to payments and does not turn WhatsApp enquiries into purchases.
+
 Date: 9 September 2026
 
 Application: C:/Users/Partho Sarkar/Downloads/premium-shop/premium-shop

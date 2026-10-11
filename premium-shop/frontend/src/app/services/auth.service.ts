@@ -33,6 +33,12 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.token;
+    if (!this.token) return false;
+    try {
+      const claims = JSON.parse(atob(this.token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      if (claims.role === 'admin' && typeof claims.exp === 'number' && claims.exp * 1000 > Date.now()) return true;
+    } catch {}
+    this.token = null;
+    return false;
   }
 }

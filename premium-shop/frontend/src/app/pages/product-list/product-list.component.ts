@@ -5,6 +5,7 @@ import {
   ElementRef,
   OnDestroy,
   OnInit,
+  Optional,
   ViewChild,
 } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
@@ -20,6 +21,9 @@ import {
   ProductImageSrcsetPipe,
 } from "../../shared/product-image.pipe";
 import { BannerCarouselComponent } from "../../shared/banner-carousel.component";
+import { SeoService } from '../../services/seo.service';
+import { AnalyticsService } from '../../services/analytics.service';
+import { categoryPath, categoryTitle, categoryIntro, organizationData } from '../../shared/seo-content';
 import {
   CatalogSort,
   categoryIcon,
@@ -80,6 +84,10 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly pageSize = 12;
   visibleCount = this.pageSize;
   readonly icon = categoryIcon;
+  readonly categoryPath = categoryPath;
+  readonly categoryTitle = categoryTitle;
+  readonly categoryIntro = categoryIntro;
+  private queryNoindex = false;
   private observer?: IntersectionObserver;
   private resizeObserver?: ResizeObserver;
   private frame = 0;
@@ -90,6 +98,8 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
     private productService: ProductService,
     private destroyRef: DestroyRef,
     private route: ActivatedRoute,
+    @Optional() private seo: SeoService | null = null,
+    @Optional() private analytics: AnalyticsService | null = null,
   ) {}
   ngOnInit(): void {
     combineLatest([this.route.paramMap, this.route.queryParamMap])
@@ -97,6 +107,8 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(([params, query]) => {
         this.selectedCategory =
           params.get("category") || query.get("category") || "";
+        this.searchTerm = query.get('search') || query.get('q') || '';
+        this.queryNoindex = query.keys.some(key => ['search', 'q', 'sort', 'minPrice', 'maxPrice', 'duration', 'inStock'].includes(key));
         this.applyFilters();
       });
     this.fetchProducts();
@@ -205,6 +217,12 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.visibleCount = this.pageSize;
     this.updateDisplayedProducts();
+    this.updateMetadata();
+  }
+  private updateMetadata(): void {
+    const category = this.selectedCategory;
+    const noindex = this.queryNoindex || !!this.searchTerm || this.minPrice !== null || this.maxPrice !== null || this.duration !== null || this.inStockOnly || this.sort !== 'default' || (!!category && !this.products.some(product => product.category === category));
+    this.seo?.set(category ? categoryTitle(category) + ' | Premium Dukan' : 'AI, Software & Design Subscriptions | Premium Dukan', category ? categoryIntro(category) : 'Compare digital subscription offers, prices, duration and activation details. Explore the global catalogue and order on WhatsApp.', category ? categoryPath(category) : '/', noindex, organizationData(category || undefined));
   }
   loadMore(): void {
     if (this.isLoading || this.errorMsg || !this.hasMoreProducts) return;
@@ -247,7 +265,10 @@ export class ProductListComponent implements OnInit, AfterViewInit, OnDestroy {
     return product.id;
   }
   buyNow(product: Product): void {
-    if (product.stock > 0)
+    if (product.stock > 0) {
+      this.analytics?.event('whatsapp_click', product);
+      this.analytics?.event('begin_checkout', product);
       window.open(whatsappUrl(product), "_blank", "noopener,noreferrer");
+    }
   }
 }
