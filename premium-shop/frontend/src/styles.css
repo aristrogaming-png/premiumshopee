@@ -313,30 +313,42 @@ progress {
   color: var(--muted);
 }
 .offer-loader {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  z-index: 110;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 18px;
-  min-height: 220px;
-  margin: 20px 0;
-  padding: 32px 24px;
+  gap: 14px;
+  width: min(360px, calc(100vw - 40px));
+  box-sizing: border-box;
+  padding: 18px 20px;
   border: 1px solid var(--border);
   border-radius: 20px;
   background: var(--surface);
-  text-align: center;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 16%);
+  pointer-events: none;
 }
 .offer-loader p {
-  max-width: 32ch;
   margin: 0;
   color: var(--text);
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 1.6;
+  line-height: 1.5;
 }
-.offer-loader-spinner {
-  width: 40px;
-  height: 40px;
+.offer-loader-emoji {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  height: 48px;
+  font-size: 28px;
+  line-height: 1;
+}
+.offer-loader-emoji::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   border: 3px solid var(--accent-soft);
   border-top-color: var(--accent-ink);
   border-radius: 50%;
@@ -346,7 +358,7 @@ progress {
   to { transform: rotate(360deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .offer-loader-spinner { animation: none; }
+  .offer-loader-emoji::after { animation: none; }
 }
 .field {
   display: grid;
