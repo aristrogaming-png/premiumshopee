@@ -115,11 +115,14 @@
       isLoading ? "Loading..." : filteredProducts.length + (filteredProducts.length === 1 ? " plan" : " plans")
     }}</span>
   </div>
+  <div *ngIf="isLoading" class="offer-loader" role="status" aria-live="polite">
+    <span class="offer-loader-spinner" aria-hidden="true"></span>
+    <p>Please wait while we find the best offer for you…</p>
+  </div>
   <div
     *ngIf="isLoading"
     class="product-grid"
-    role="status"
-    aria-label="Loading subscriptions"
+    aria-hidden="true"
   >
     <div
       *ngFor="let item of [1, 2, 3, 4, 5, 6]"
