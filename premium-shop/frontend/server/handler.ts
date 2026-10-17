@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { renderPage, sitemap, Snapshot } from './render';
 import { SITE, categoryPath, productPath, slug } from '../src/app/shared/seo-content';
+import { withUsTravelBanner } from '../src/app/models/banner';
 
 import { informationPages } from '../src/app/shared/information-content';
 
@@ -48,6 +49,12 @@ export async function handler(req: any, res: any): Promise<void> {
     res.end(req.method === 'HEAD' ? '' : body);
   };
   if (!['GET', 'HEAD'].includes(req.method || 'GET')) return finish(405, { Allow: 'GET, HEAD', 'Cache-Control': 'no-store' });
+  if (path === '/api/visitor-country') {
+    const countryCode = typeof req.headers?.['x-vercel-ip-country'] === 'string'
+      ? req.headers['x-vercel-ip-country'].toUpperCase()
+      : '';
+    return finish(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }, JSON.stringify({ countryCode }));
+  }
   // Vercel owns domain redirects (apex -> www). Redirecting hosts here can
   // conflict with its domain settings and send visitors into a redirect loop.
   if (/\\|\x00/.test(path) || path.startsWith('//')) return finish(400, { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' });
@@ -70,7 +77,10 @@ export async function handler(req: any, res: any): Promise<void> {
     const bannerRequest = path === '/' ? readBanners() : Promise.resolve([]);
     const snapshot = await readCatalog();
     const banners = await bannerRequest;
-    const data = { ...snapshot, banners };
+    const countryCode = typeof req.headers?.['x-vercel-ip-country'] === 'string'
+      ? req.headers['x-vercel-ip-country']
+      : undefined;
+    const data = { ...snapshot, banners: withUsTravelBanner(banners, countryCode) };
     const timing = `catalog;dur=${(performance.now() - start).toFixed(1)}`;
     if (path === '/sitemap.xml') return finish(200, { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=0, s-maxage=60', 'Server-Timing': timing }, sitemap(data));
     let decoded: string;
@@ -83,7 +93,7 @@ export async function handler(req: any, res: any): Promise<void> {
       if (category && path !== categoryPath(category)) return finish(308, { Location: categoryPath(category), 'Cache-Control': 'public, max-age=0, s-maxage=60' });
     }
     const page = renderPage(template, path, incoming.searchParams, data, publicConfig);
-    finish(page.status, { ...page.headers, 'Server-Timing': timing }, page.body);
+    finish(page.status, { ...page.headers, ...(path === '/' ? { 'Cache-Control': 'private, no-store', Vary: 'x-vercel-ip-country' } : {}), 'Server-Timing': timing }, page.body);
   } catch {
     // Do not turn a backend outage into indexable empty products or a false 404.
     const page = renderPage(template, '/temporarily-unavailable', new URLSearchParams(), empty, publicConfig);

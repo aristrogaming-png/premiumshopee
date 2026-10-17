@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable, of, shareReplay, tap, timeout } from "rxjs";
+import { Observable, catchError, forkJoin, map, of, shareReplay, tap, timeout } from "rxjs";
 import { freshBootstrap } from '../shared/bootstrap-data';
-import { Banner } from "../models/banner";
+import { Banner, withUsTravelBanner } from "../models/banner";
 import { environment } from "../../environment/environment";
 
 @Injectable({ providedIn: "root" })
@@ -20,7 +20,17 @@ export class BannerService {
   getBanners(): Observable<Banner[]> {
     if (!this.cached || Date.now() >= this.expires) {
       this.expires = Infinity;
-      const request = this.http.get<Banner[]>(`${this.base}/banners`).pipe(
+      const previewCountry = this.localPreviewCountry();
+      const request = forkJoin({
+        banners: this.http.get<Banner[]>(`${this.base}/banners`).pipe(timeout(90000)),
+        visitor: previewCountry
+          ? of({ countryCode: previewCountry })
+          : this.http.get<{ countryCode?: string }>("/api/visitor-country").pipe(
+              timeout(3000),
+              catchError(() => of({ countryCode: undefined as string | undefined })),
+            ),
+      }).pipe(
+        map(({ banners, visitor }) => withUsTravelBanner(banners, visitor.countryCode)),
         timeout(90000),
         tap({
           next: () => {
@@ -35,6 +45,12 @@ export class BannerService {
       this.cached = request;
     }
     return this.cached;
+  }
+  private localPreviewCountry(): string | undefined {
+    if (environment.production || typeof window === "undefined" ||
+        !["localhost", "127.0.0.1"].includes(window.location.hostname)) return;
+    const country = new URLSearchParams(window.location.search).get("previewCountry");
+    return country && /^[a-z]{2}$/i.test(country) ? country.toUpperCase() : undefined;
   }
   getAdminBanners(): Observable<Banner[]> {
     return this.http

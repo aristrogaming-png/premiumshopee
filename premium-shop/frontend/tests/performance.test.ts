@@ -460,8 +460,7 @@ test("banner cache deduplicates reads and invalidates on save/delete while admin
     targetUrl: "/",
   };
   const service = new BannerService({
-    get: () =>
-      defer(() => {
+    get: (url: string) => url.endsWith('/visitor-country') ? of({}) : defer(() => {
         reads++;
         return of([banner]);
       }),
