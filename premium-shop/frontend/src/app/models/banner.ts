@@ -17,7 +17,7 @@ export interface Banner extends ImageValue {
 export const US_TRAVEL_BANNER: Banner = {
   id: "alice-store-travel-deals-us",
   title: "Alice Store Travel Deals",
-  imageUrl: "/assets/Alice%20Store%20Travel%20Deals%20Banner.png",
+  imageUrl: "/assets/Alice%20Store%20Travel%20Deals%20Banner.jpeg",
   altText: "Alice Store travel deals: save up to 50% on flights, hotels, rentals, and more.",
   targetUrl: "https://t.me/AliceServiceStore",
 };
